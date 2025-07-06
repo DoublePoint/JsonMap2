@@ -10,7 +10,6 @@ import WindiCSS from 'vite-plugin-windicss';
 import Markdown from 'vite-plugin-vue-markdown'
 import Prism from 'markdown-it-prism';
 import ViteFonts from 'vite-plugin-fonts';
-import VueI18n from '@intlify/vite-plugin-vue-i18n';
 import LinkAttributes from 'markdown-it-link-attributes';
 import { ConfigEnv } from 'vite';
 import { resolve } from 'path';
@@ -26,7 +25,7 @@ export default (env: ConfigEnv) => {
     svgLoader(),
     AutoImport({
       dts: './src/auto-imports.d.ts',
-      imports: ['vue', 'pinia', 'vue-router', 'vue-i18n', , '@vueuse/core'],
+      imports: ['vue', 'pinia', 'vue-router', '@vueuse/core'],
       // Generate corresponding .eslintrc-auto-import.json file.
       // eslint globals Docs - https://eslint.org/docs/user-guide/configuring/language-options#specifying-globals
       eslintrc: {
@@ -53,9 +52,9 @@ export default (env: ConfigEnv) => {
         families: ['Open Sans', 'Montserrat', 'Fira Sans'],
       },
     }),
-    VueI18n({
-      include: [resolve(__dirname, '../locales/**')],
-    }),
+    // VueI18n({
+    //   include: [resolve(__dirname, '../locales/**')],
+    // }),
     WindiCSS({
       safelist: defaultClasses,
     }),
