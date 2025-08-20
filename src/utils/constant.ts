@@ -36,11 +36,12 @@ export const CONST_OUTPUT_PATH_TYPE_ITEMS = [
 ];
 
 /**
- * 输出键还是值
+ * 输出键、值、固定内容
  */
 export const CONST_OUTPUT_KEY_OR_VALUE_TYPE = {
   KEY: '0',
   VALUE: '1',
+  CONST_VALUE: '2',
 };
 
 /**
@@ -49,4 +50,5 @@ export const CONST_OUTPUT_KEY_OR_VALUE_TYPE = {
 export const CONST_OUTPUT_KEY_OR_VALUE_TYPE_ITEMS = [
   { value: CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE, label: '输出value' },
   { value: CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY, label: '输出key' },
+  { value: CONST_OUTPUT_KEY_OR_VALUE_TYPE.CONST_VALUE, label: '输出固定内容' },
 ];

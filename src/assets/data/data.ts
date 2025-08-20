@@ -25,3 +25,16 @@ export const JSON_KEYS = {
   AA_BB_CC_0: 9.1,
   AA_BB_CC_1: 9.2,
 };
+
+export const JSON_TREE = {
+  data: {
+    '1234': {
+      clientId: '12',
+      hidden: true,
+    },
+    '1235': {
+      clientId: '35',
+      hidden: false,
+    },
+  },
+};

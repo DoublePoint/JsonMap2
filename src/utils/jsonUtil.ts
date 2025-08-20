@@ -105,7 +105,16 @@ export function treeToSpecJson(nodes: JsonTreeModel[]): any {
       if (node.spec) {
         //如果输出的包含key
         result[node.spec.nodeKeyExpression] = {};
-        if (node.spec.outputKeyOrValueType.indexOf(CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY) != -1) {
+        const isOutputKeyOrValueContainKey = node.spec.outputKeyOrValueType.includes(
+          CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY,
+        );
+        const isOutputKeyOrValueContainValue = node.spec.outputKeyOrValueType.includes(
+          CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE,
+        );
+        const isOutputKeyOrValueContainsConstValue = node.spec.outputKeyOrValueType.includes(
+          CONST_OUTPUT_KEY_OR_VALUE_TYPE.CONST_VALUE,
+        );
+        if (isOutputKeyOrValueContainKey) {
           for (let i = 0; i < node.spec.outputKeysExpressions.length; i++) {
             const outputExpres = node.spec.outputKeysExpressions[i];
             if (outputExpres.outputPathExpression) {
@@ -117,21 +126,46 @@ export function treeToSpecJson(nodes: JsonTreeModel[]): any {
             }
           }
         }
-        if (node.spec.outputKeyOrValueType.indexOf(CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE) != -1) {
+        //如果输出的包含Value
+        if (isOutputKeyOrValueContainValue) {
           for (let i = 0; i < node.spec.outputValuesExpressions.length; i++) {
             const outputExpres = node.spec.outputValuesExpressions[i];
-            debugger;
             if (outputExpres.outputPathExpression) {
               result[node.spec.nodeKeyExpression][`@`] = outputExpres.outputPathExpression;
             } else {
               result[node.spec.nodeKeyExpression] = treeToSpecJson(node.children);
             }
           }
-        } else {
-          result[node.spec.nodeKeyExpression] = {
-            $: node.spec.outputPathExpression,
-          };
         }
+        // else {
+        //   result[node.spec.nodeKeyExpression] = {
+        //     $: node.spec.outputPathExpression,
+        //   };
+        // }
+        //如果输出的包含特定字符串
+        if (isOutputKeyOrValueContainsConstValue) {
+          debugger;
+          for (let i = 0; i < node.spec.outputConstValuesExpressions.length; i++) {
+            const outputExpres = node.spec.outputConstValuesExpressions[i];
+            if (outputExpres.outputPathExpression && outputExpres.outputConstValue) {
+              result[node.spec.nodeKeyExpression][`#${outputExpres.outputConstValue}`] =
+                outputExpres.outputPathExpression;
+            } else {
+              result[node.spec.nodeKeyExpression] = treeToSpecJson(node.children);
+            }
+          }
+        }
+
+        //如果都不包含
+        if (!isOutputKeyOrValueContainKey && !isOutputKeyOrValueContainValue && !isOutputKeyOrValueContainsConstValue) {
+          result[node.spec.nodeKeyExpression] = treeToSpecJson(node.children);
+        }
+
+        // else {
+        //   result[node.spec.nodeKeyExpression] = {
+        //     $: node.spec.outputPathExpression,
+        //   };
+        // }
       } else {
         const rel = treeToSpecJson(node.children);
         if (Object.keys(rel).length > 0) {
@@ -142,8 +176,17 @@ export function treeToSpecJson(nodes: JsonTreeModel[]): any {
       // 如果是叶子节点，直接使用value作为值
       if (node.spec) {
         result[node.spec.nodeKeyExpression] = {};
+        const isOutputKeyOrValueContainKey = node.spec.outputKeyOrValueType.includes(
+          CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY,
+        );
+        const isOutputKeyOrValueContainValue = node.spec.outputKeyOrValueType.includes(
+          CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE,
+        );
+        const isOutputKeyOrValueContainsConstValue = node.spec.outputKeyOrValueType.includes(
+          CONST_OUTPUT_KEY_OR_VALUE_TYPE.CONST_VALUE,
+        );
         //如果输出的包含key
-        if (node.spec.outputKeyOrValueType.indexOf(CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY) != -1) {
+        if (isOutputKeyOrValueContainKey) {
           for (let i = 0; i < node.spec.outputKeysExpressions.length; i++) {
             const outputExpres = node.spec.outputKeysExpressions[i];
             result[node.spec.nodeKeyExpression][
@@ -152,15 +195,22 @@ export function treeToSpecJson(nodes: JsonTreeModel[]): any {
           }
         }
         //如果输出的包含Value
-        if (node.spec.outputKeyOrValueType.indexOf(CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE) != -1) {
+        if (isOutputKeyOrValueContainValue) {
           for (let i = 0; i < node.spec.outputValuesExpressions.length; i++) {
             const outputExpres = node.spec.outputValuesExpressions[i];
             result[node.spec.nodeKeyExpression][`@`] = outputExpres.outputPathExpression;
           }
-        } else {
-          result[node.spec.nodeKeyExpression] = {
-            $: node.spec.outputPathExpression,
-          };
+        }
+
+        //如果输出的包含特定字符串
+        if (isOutputKeyOrValueContainsConstValue) {
+          for (let i = 0; i < node.spec.outputConstValuesExpressions.length; i++) {
+            const outputExpres = node.spec.outputConstValuesExpressions[i];
+            if (outputExpres.outputPathExpression && outputExpres.outputConstValue) {
+              result[node.spec.nodeKeyExpression][`#${outputExpres.outputConstValue}`] =
+                outputExpres.outputPathExpression;
+            }
+          }
         }
       }
     }
@@ -224,4 +274,35 @@ export function mergeJsonWithSpec(json1: string, json2: string): any {
   }
 
   return walk(j1, j2);
+}
+
+/**
+ * 向上查找节点
+ * @param root   整棵树（根节点数组）
+ * @param node   起始节点
+ * @param level  向上几级（必须为正整数）
+ * @returns      对应的祖先节点；若不存在则返回 undefined
+ */
+export function getAncestor(root: JsonTreeModel[], node: JsonTreeModel, level: number): JsonTreeModel | undefined {
+  if (level <= 0) return node;
+
+  // 1. 建立 id -> node 的索引表
+  const idMap = new Map<string, JsonTreeModel>();
+  function dfs(arr: JsonTreeModel[]) {
+    for (const n of arr) {
+      idMap.set(n.id, n);
+      if (n.children?.length) dfs(n.children);
+    }
+  }
+  dfs(root);
+
+  // 2. 逐层向上跳
+  let currentId = node.id;
+  for (let i = 0; i < level; i++) {
+    // 去掉最后一段 "-x"
+    const lastDash = currentId.lastIndexOf('-');
+    if (lastDash === -1) return undefined; // 已到达根节点
+    currentId = currentId.slice(0, lastDash);
+  }
+  return idMap.get(currentId);
 }

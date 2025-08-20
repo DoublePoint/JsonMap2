@@ -47,7 +47,7 @@ onMounted(() => {
 });
 
 function init(){
-  inputJson.value= JSONDATA.JSON_KEYS;
+  inputJson.value= JSONDATA.JSON_TREE;
 }
 function onInputJsonChange(value:any) {
   inputJson.value = value;

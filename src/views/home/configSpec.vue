@@ -7,8 +7,9 @@
       <el-table-column prop="value" label="值" sortable />
       <el-table-column label="转换规则" >
         <template #default="scope">
-          <span >{{formatter(scope.row)}}</span>
           <el-button :icon="CopyDocument" circle @click="CopyToClipboard(scope.row)" style="margin: 5px;"/>
+          <!-- <span >{{formatter(scope.row)}}</span> -->
+          <el-tag v-if="scope.row.spec">规则</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -18,7 +19,7 @@
       </el-table-column>
     </el-table>
     <el-dialog v-model="dialogSpecConfigVisible" title="编辑规则" width="2000" height="800" center draggable overflow>
-      <configSpecDetail v-model:node="currentConfigSpecDetail"></configSpecDetail>
+      <configSpecDetail v-model:node="currentConfigSpecDetail" :root-node="tableData"></configSpecDetail>
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogSpecConfigVisible = false">取消</el-button>
@@ -87,7 +88,7 @@ const handleDialogSpecConfigOk = () => {
 const formatter = (row: JsonTreeModel) => {
   const str = JSON.stringify(row.spec);
   if(str?.length > 20){
-    return str.substring(0,20) + '...'
+    return str.substring(0,5) + '...'
   }
   return str;
 }
