@@ -13,10 +13,12 @@
   "dependencies": {
     "@vueuse/core": "^8.9.4",
     "axios": "^0.25.0",
+    "class-transformer": "^0.5.1",
     "element-plus": "^2.2.12",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.18",
     "prism-theme-vars": "^0.2.4",
+    "reflect-metadata": "^0.2.2",
     "vue": "^3.2.37",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.1.3",

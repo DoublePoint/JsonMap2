@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="m-5">
+  <div >
     <el-config-provider>
       <router-view></router-view>
     </el-config-provider>
@@ -11,11 +11,4 @@
 </template>
 
 <style lang="scss">
-.m-5 {
-  height: 100%;
-}
-
-#app {
-  height: 100%;
-}
 </style>

@@ -1,3 +1,5 @@
+import { IFieldInfo } from './model/jsonModelInterface';
+
 /**
  * 键的匹配规则
  */
@@ -6,6 +8,10 @@ export const CONST_KEY_SELECT_TYPE = {
   ALL_CURRENT_LEVEL_NODE: '1',
   EXPRESSION_NODE: '2',
   UPPER_NODE: '3',
+};
+
+export const CONST_OUTPUT_KEY_PARAM1_TYPE = {
+  CURRENT_KEY: 'C',
 };
 
 /**
@@ -52,3 +58,18 @@ export const CONST_OUTPUT_KEY_OR_VALUE_TYPE_ITEMS = [
   { value: CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY, label: '输出key' },
   { value: CONST_OUTPUT_KEY_OR_VALUE_TYPE.CONST_VALUE, label: '输出固定内容' },
 ];
+
+export const CONST_FILED_INFO_ITEMS = {
+  UNKONWFIELD: {
+    fieldCode: 'UNKONW',
+    fieldName: 'UNKONW',
+    fieldType: 'UNKONW',
+    fieldDesc: 'UNKONW',
+  },
+  '1': {
+    fieldCode: '1',
+    fieldName: '',
+    fieldType: '1',
+    fieldDesc: '当字段值等于文本框中输入的内容时则输出数据，否则始终输出。',
+  },
+};
