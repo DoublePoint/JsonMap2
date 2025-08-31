@@ -209,7 +209,11 @@ export function treeToSpecJson(nodes: JsonTreeModel[]): any {
             if (result[specDetail.nodeKeyExpression]) {
               let expression = JSON.parse(JSON.stringify(result[specDetail.nodeKeyExpression]));
               delete result[specDetail.nodeKeyExpression];
-              setByPath(result, [replaceSpecialCharacters(node.code), specDetail.whereExpression.whereExpression, specDetail.nodeKeyExpression], expression);
+              if (node.type === 'array') {
+                setByPath(result, ['*', specDetail.whereExpression.whereExpression, specDetail.nodeKeyExpression], expression);
+              } else {
+                setByPath(result, [replaceSpecialCharacters(node.code), specDetail.whereExpression.whereExpression, specDetail.nodeKeyExpression], expression);
+              }
             } else {
               setByPath(result, [replaceSpecialCharacters(node.code), specDetail.whereExpression.whereExpression], {});
               assignProps(result[replaceSpecialCharacters(node.code)][specDetail.whereExpression.whereExpression], constValueResult);
@@ -262,6 +266,7 @@ function isPlainObject(item: any): item is Record<string, any> {
 
 export function build$(param1: string, param2?: string) {
   if (!param1) {
+    debugger;
     return `$(error)`;
   }
   if (param2) {
@@ -301,6 +306,9 @@ export function setByPath(obj: any, keys: string[], value: any) {
     cur = cur[k];
   }
   if (!cur[keys[last]]) {
+    if (value.constructor === String) {
+      value = value.replace('\\\\', '\\');
+    }
     cur[keys[last]] = value;
   }
 }
@@ -375,20 +383,67 @@ export function getAncestor(root: JsonTreeModel[], node: JsonTreeModel, level: n
   return idMap.get(currentId);
 }
 
+/**
+ * 获取节点的所有祖先节点（包括当前节点）
+ * @param root   整棵树（根节点数组）
+ * @param node   起始节点
+ * @returns      节点数组，索引为向上层级数（当前节点层级为0），值为对应的节点对象
+ */
+export function getAncestors(root: JsonTreeModel[], node: JsonTreeModel): JsonTreeModel[] {
+  const ancestors: JsonTreeModel[] = [];
+
+  // 如果节点id无效，直接返回空数组
+  if (!node.id) {
+    return ancestors;
+  }
+
+  // 1. 建立 id -> node 的索引表
+  const idMap = new Map<string, JsonTreeModel>();
+  function dfs(arr: JsonTreeModel[]) {
+    for (const n of arr) {
+      idMap.set(n.id, n);
+      if (n.children?.length) dfs(n.children);
+    }
+  }
+  dfs(root);
+
+  // 2. 收集所有祖先节点ID（包括当前节点）
+  const nodeInfos: { id: string; node: JsonTreeModel; level: number }[] = [];
+  let currentId = node.id;
+  let currentNode = node;
+  let level = 0;
+
+  // 先添加当前节点
+  nodeInfos.push({ id: currentId, node: currentNode, level: level });
+
+  // 然后逐级向上收集祖先节点
+  while (true) {
+    // 去掉最后一段 "-x"
+    const lastDash = currentId.lastIndexOf('-');
+    if (lastDash === -1) break; // 已到达根节点
+
+    currentId = currentId.slice(0, lastDash);
+    const ancestorNode = idMap.get(currentId);
+    if (ancestorNode) {
+      level++;
+      nodeInfos.push({ id: currentId, node: ancestorNode, level: level });
+    }
+  }
+
+  // 3. 按层级顺序填充祖先数组（索引为向上层级数）
+  for (let i = nodeInfos.length - 1; i >= 0; i--) {
+    const nodeInfo = nodeInfos[i];
+    ancestors[nodeInfo.level] = nodeInfo.node;
+  }
+
+  return ancestors;
+}
+
 export function replaceSpecialCharacters(str: string): string {
-  return str
-    .replaceAll('@', '\\@')
-    .replaceAll('*', '\\*)')
-    .replaceAll('?', '\\?')
-    .replaceAll('$', '\\$')
-    .replaceAll('#', '\\#')
-    .replaceAll('&', '\\&')
-    .replaceAll('\\\\@', '\\@')
-    .replaceAll('\\\\*', '\\*')
-    .replaceAll('\\\\?', '\\?')
-    .replaceAll('\\\\$', '\\$')
-    .replaceAll('\\\\#', '\\#')
-    .replaceAll('\\\\&', '\\&');
+  if (!str) {
+    return '';
+  }
+  return str.replaceAll('@', '\\@').replaceAll('$', '\\$').replaceAll('#', '\\#').replaceAll('&', '\\&');
 }
 
 /**
@@ -461,4 +516,5 @@ export function getCodePathById(id: string, root: JsonTreeModel[]): string {
   if (codes.length != 0) {
     return codes.join('.') + '.';
   }
+  return '';
 }

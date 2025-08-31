@@ -18,7 +18,7 @@ $(
     <!-- endregion 输出条件信息-->
 
     <el-tabs editable type="border-card" v-model="tabActiveName">
-      <el-tab-pane v-for="(specDetail, index) in innSpec.specList" :label="specDetail.title + (index + 1)" :name="index + ''">
+      <el-tab-pane v-for="(specDetail, index) in innSpec.specList" :label="specDetail.title + (index + 1) + ' : [' + (specDetail.whereExpression.whereExpression || '') + ']'" :name="index + ''">
         <el-card class="ll-card" shadow="always">
           <el-descriptions title="输出条件配置" border />
           <field-info fieldCode="1"></field-info>
@@ -214,7 +214,7 @@ const outputKeyOrValueTypeChange = (specDetail: SpecDetail, checkBoxValue: Check
   //包含Key
   if (value.indexOf(Constant.CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY) != -1) {
     if (!specDetail.outputKeysExpressions || specDetail.outputKeysExpressions?.length == 0) {
-      specDetail.outputKeysExpressions = [new OutputKeyExpression('0')];
+      specDetail.outputKeysExpressions = [new OutputKeyExpression(innNode.value, props.rootNode, '0')];
     }
   } else {
     specDetail.outputKeysExpressions.splice(0, specDetail.outputKeysExpressions.length);
@@ -222,7 +222,7 @@ const outputKeyOrValueTypeChange = (specDetail: SpecDetail, checkBoxValue: Check
   //包含Value
   if (value.indexOf(Constant.CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE) != -1) {
     if (!specDetail.outputValuesExpressions || specDetail.outputValuesExpressions?.length == 0) {
-      specDetail.outputValuesExpressions = [new OutputValueExpression()];
+      specDetail.outputValuesExpressions = [new OutputValueExpression(innNode.value, props.rootNode)];
     }
   } else {
     specDetail.outputValuesExpressions.splice(0, specDetail.outputValuesExpressions.length);
@@ -231,7 +231,7 @@ const outputKeyOrValueTypeChange = (specDetail: SpecDetail, checkBoxValue: Check
   //包含ConstValue
   if (value.indexOf(Constant.CONST_OUTPUT_KEY_OR_VALUE_TYPE.CONST_VALUE) != -1) {
     if (!specDetail.outputConstValuesExpressions || specDetail.outputConstValuesExpressions?.length == 0) {
-      specDetail.outputConstValuesExpressions = [new OutputConstValueExpression()];
+      specDetail.outputConstValuesExpressions = [new OutputConstValueExpression(innNode.value, props.rootNode)];
     }
   } else {
     specDetail.outputConstValuesExpressions.splice(0, specDetail.outputConstValuesExpressions.length);
@@ -266,11 +266,11 @@ const handleDelOutputKeyExpression = (specDetail: SpecDetail, index: number) => 
 };
 
 const handleAddOutputKeyExpression = (specDetail: SpecDetail) => {
-  specDetail.outputKeysExpressions.push(new OutputKeyExpression(Constant.CONST_OUTPUT_KEY_PARAM1_TYPE.CURRENT_KEY));
+  specDetail.outputKeysExpressions.push(new OutputKeyExpression(innNode.value, props.rootNode, Constant.CONST_OUTPUT_KEY_PARAM1_TYPE.CURRENT_KEY));
 };
 
 const handleAddOutputConstValueExpression = (specDetail: SpecDetail) => {
-  specDetail.outputConstValuesExpressions.push(new OutputConstValueExpression());
+  specDetail.outputConstValuesExpressions.push(new OutputConstValueExpression(innNode.value, props.rootNode));
 };
 
 const handleAddSpec = () => {
@@ -279,24 +279,9 @@ const handleAddSpec = () => {
     return;
   }
 
-  innSpec.value.specList.push({
-    title: '规则',
-    whereExpression: {},
-    keySelectType: '0',
-    nodeKeyExpression: '',
-    nodeKeyExpressionParam1: '',
-    nodeKeyExpressionParam2: '',
-    outputKeyOrValueType: ['0'],
-    outputKeys: [],
-    outputKeysExpressions: [],
-    outputValuesExpressions: [],
-    outputConstValuesExpressions: [],
-    outputPathExpression: '',
-    outputPathType: Constant.CONST_OUTPUT_PATH_TYPE.DIRECT_INPUT,
-    outputPathExpressionParam1: '0',
-    outputPathExpressionParam2: '0',
-  });
+  innSpec.value.specList.push(new SpecDetail(innNode.value, props.rootNode));
   innNode.value.spec = innSpec.value;
+  tabActiveName.value = (innSpec.value.specList.length - 1).toString();
   emit('update:node', innNode.value);
 };
 const handleWhereExpressionChange = (value: string) => {

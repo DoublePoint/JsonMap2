@@ -15,6 +15,7 @@
     "axios": "^0.25.0",
     "class-transformer": "^0.5.1",
     "element-plus": "^2.2.12",
+    "flatted": "^3.3.3",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.18",
     "prism-theme-vars": "^0.2.4",

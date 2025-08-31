@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-table :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border default-expand-all>
-      <el-table-column prop="id" label="ID" sortable />
-      <el-table-column prop="name" label="Name" sortable />
-      <el-table-column prop="type" label="值类型" sortable />
-      <el-table-column prop="value" label="值" sortable />
+    <el-table :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border highlight-current-row row-class-name="custom-row">
+      <el-table-column prop="id" label="ID" sortable show-overflow-tooltip />
+      <el-table-column prop="name" label="Name" sortable show-overflow-tooltip />
+      <el-table-column prop="type" label="值类型" sortable show-overflow-tooltip />
+      <el-table-column prop="value" label="值" sortable width="100px" show-overflow-tooltip />
       <el-table-column label="转换规则">
         <template #default="scope">
           <el-button :icon="CopyDocument" circle @click="CopyToClipboard(scope.row)" style="margin: 5px" />
@@ -80,7 +80,7 @@ const handleConfigSpecClick = (row: JsonTreeModel) => {
     exposeDefaultValues: false, // 不填充默认值
   });
   if (!currentConfigSpecDetail.value.spec) {
-    currentConfigSpecDetail.value.spec = new SpecModel(row);
+    currentConfigSpecDetail.value.spec = new SpecModel(row, tableData.value);
   }
   // currentConfigSpecDetail.value = structuredClone<JsonTreeModel>(toRaw(row));
   dialogSpecConfigVisible.value = true;
@@ -106,3 +106,8 @@ const CopyToClipboard = (row: JsonTreeModel) => {
   ElMessage.success('复制成功');
 };
 </script>
+<style scoped>
+.custom-row {
+  height: 48px !important; /* 自定义行高 */
+}
+</style>

@@ -33,22 +33,48 @@ export class SpecModel {
   @Type(() => SpecDetail)
   specList: SpecDetail[];
 
-  constructor(jsonTreeModel: JsonTreeModel) {
-    this.specList = [new SpecDetail(jsonTreeModel)];
+  constructor(currentNode: JsonTreeModel, rootNode: JsonTreeModel[]) {
+    this.specList = [new SpecDetail(currentNode, rootNode)];
   }
-  // keySelectType: string; //键的匹配规则
-  // nodeKeyExpression: string;
-  // nodeKeyExpressionParam1: string;
-  // nodeKeyExpressionParam2: string;
-  // outputKeyOrValueType: string[]; //输出键还是值还是两者都有
-  // outputKeys: string[]; //输出为Key时，可以匹配多个key
-  // outputKeysExpressions: IOutputKeyExpression[]; //输出的为键时的表达式数组
-  // outputValuesExpressions: OutputValueExpression[]; //输出的为值时的表达式数组
-  // outputConstValuesExpressions: OutputConstValueExpression[]; //输出的为值时的表达式数组
-  // outputPathExpression: string;
-  // outputPathType: string; //输出路径类型，直接输入还是表达式等
-  // outputPathExpressionParam1: string; //输出路径参数1
-  // outputPathExpressionParam2: string; //输出路径参数2
+}
+
+export class SpecDetail implements ISpecDetail {
+  title: string;
+  whereExpression: IWhereExpression;
+  keySelectType: string; //键的匹配规则
+  nodeKeyExpression: string;
+  nodeKeyExpressionParam1: string;
+  nodeKeyExpressionParam2: string;
+  outputKeyOrValueType: string[]; //输出键还是值还是两者都有
+  outputKeys: string[]; //输出为Key时，可以匹配多个key
+  @Type(() => OutputKeyExpression)
+  outputKeysExpressions: OutputKeyExpression[]; //输出的为键时的表达式数组
+  @Type(() => OutputValueExpression)
+  outputValuesExpressions: OutputValueExpression[]; //输出的为值时的表达式数组
+  @Type(() => OutputConstValueExpression)
+  outputConstValuesExpressions: OutputConstValueExpression[]; //输出的为值时的表达式数组
+  outputPathExpression: string;
+  outputPathType: string; //输出路径类型，直接输入还是表达式等
+  outputPathExpressionParam1: string; //输出路径参数1
+  outputPathExpressionParam2: string; //输出路径参数2
+
+  constructor(currentNode: JsonTreeModel, rootNode: JsonTreeModel[]) {
+    this.title = '规则';
+    this.whereExpression = new WhereExpression();
+    this.keySelectType = Constant.CONST_KEY_SELECT_TYPE.CURRENT_NODE;
+    this.nodeKeyExpression = currentNode?.code;
+    this.nodeKeyExpressionParam1 = '0';
+    this.nodeKeyExpressionParam2 = '';
+    this.outputKeyOrValueType = [Constant.CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE];
+    this.outputKeys = [Constant.CONST_OUTPUT_PATH_TYPE.DIRECT_INPUT];
+    this.outputKeysExpressions = [];
+    this.outputValuesExpressions = [new OutputValueExpression(currentNode, rootNode)];
+    this.outputConstValuesExpressions = [];
+    this.outputPathExpression = '';
+    this.outputPathType = Constant.CONST_OUTPUT_PATH_TYPE.DIRECT_INPUT;
+    this.outputPathExpressionParam1 = '';
+    this.outputPathExpressionParam2 = '';
+  }
 }
 
 export class OutputPathExpression implements IBaseOutputPathExpression {
@@ -138,7 +164,7 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
       this.getAncestor();
       if (this.outputPathIsContainUpperNode && this.outputPathExpressionParam1Node?.id) {
         upperCode = getCodePathById(this.outputPathExpressionParam1Node?.id, this.rootNode);
-        upperCode = replaceSpecialCharacters(upperCode);
+        // upperCode = replaceSpecialCharacters(upperCode);
       }
     }
     const pre = this.outputPathExpressionPre;
@@ -175,7 +201,6 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
    * @returns      对应的祖先节点；若不存在则返回 undefined
    */
   getAncestor(): JsonTreeModel | undefined {
-    debugger;
     try {
       const level = parseInt(this._outputPathExpressionParam1) - 1;
       if (level <= 0) {
@@ -212,8 +237,8 @@ export class OutputKeyExpression extends OutputPathExpression implements IOutput
   outputKeyExpression: string = '';
   _outputKeyExpressionParam1: string;
   _outputKeyExpressionParam2: string;
-  constructor(outputKeyExpressionParam1?: string, outputKeyExpressionParam2?: string) {
-    super();
+  constructor(_currentNode: JsonTreeModel, _rootNode: JsonTreeModel[], outputKeyExpressionParam1?: string, outputKeyExpressionParam2?: string) {
+    super(_currentNode, _rootNode);
     this._outputKeyExpressionParam1 = outputKeyExpressionParam1 || Constant.CONST_OUTPUT_KEY_PARAM1_TYPE.CURRENT_KEY;
     this._outputKeyExpressionParam2 = outputKeyExpressionParam2 || '';
     this.buildOutputKeyExpression();
@@ -250,56 +275,17 @@ export class OutputKeyExpression extends OutputPathExpression implements IOutput
 }
 
 export class OutputValueExpression extends OutputPathExpression implements IOutputValueExpression {
-  constructor() {
-    super();
+  constructor(_currentNode: JsonTreeModel, _rootNode: JsonTreeModel[]) {
+    super(_currentNode, _rootNode);
   }
 }
 
 export class OutputConstValueExpression extends OutputPathExpression implements IOutputConstValueExpression {
   outputConstValue: string;
-  constructor() {
-    super();
+  constructor(_currentNode: JsonTreeModel, _rootNode: JsonTreeModel[]) {
+    super(_currentNode, _rootNode);
     this.outputConstValue = '';
   }
 }
 
 export class WhereExpression implements IWhereExpression {}
-
-export class SpecDetail implements ISpecDetail {
-  title: string;
-  whereExpression: IWhereExpression;
-  keySelectType: string; //键的匹配规则
-  nodeKeyExpression: string;
-  nodeKeyExpressionParam1: string;
-  nodeKeyExpressionParam2: string;
-  outputKeyOrValueType: string[]; //输出键还是值还是两者都有
-  outputKeys: string[]; //输出为Key时，可以匹配多个key
-  @Type(() => OutputKeyExpression)
-  outputKeysExpressions: OutputKeyExpression[]; //输出的为键时的表达式数组
-  @Type(() => OutputValueExpression)
-  outputValuesExpressions: OutputValueExpression[]; //输出的为值时的表达式数组
-  @Type(() => OutputConstValueExpression)
-  outputConstValuesExpressions: OutputConstValueExpression[]; //输出的为值时的表达式数组
-  outputPathExpression: string;
-  outputPathType: string; //输出路径类型，直接输入还是表达式等
-  outputPathExpressionParam1: string; //输出路径参数1
-  outputPathExpressionParam2: string; //输出路径参数2
-
-  constructor(jsonTreeModel: JsonTreeModel) {
-    this.title = '';
-    this.whereExpression = new WhereExpression();
-    this.keySelectType = Constant.CONST_KEY_SELECT_TYPE.CURRENT_NODE;
-    this.nodeKeyExpression = jsonTreeModel?.code;
-    this.nodeKeyExpressionParam1 = '0';
-    this.nodeKeyExpressionParam2 = '';
-    this.outputKeyOrValueType = [Constant.CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE];
-    this.outputKeys = [Constant.CONST_OUTPUT_PATH_TYPE.DIRECT_INPUT];
-    this.outputKeysExpressions = [];
-    this.outputValuesExpressions = [new OutputValueExpression()];
-    this.outputConstValuesExpressions = [];
-    this.outputPathExpression = '';
-    this.outputPathType = Constant.CONST_OUTPUT_PATH_TYPE.DIRECT_INPUT;
-    this.outputPathExpressionParam1 = '';
-    this.outputPathExpressionParam2 = '';
-  }
-}
