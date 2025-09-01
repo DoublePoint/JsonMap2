@@ -1,130 +1,42 @@
-<br>
+# JsonWeaver - JSON 结构转换器
 
-<p align='center'>
-<a href="https://vitecamp.netlify.app/">Live Demo</a>
-</p>
+[![License](https://img.shields.io/github/license/your-username/JsonMap2)](https://github.com/your-username/JsonMap2/blob/main/LICENSE)
+[![Version](https://img.shields.io/github/package-json/v/your-username/JsonMap2)](https://github.com/your-username/JsonMap2)
+[![Node.js](https://img.shields.io/badge/Node.js-18.x-43853D?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Jolt](https://img.shields.io/badge/Powered_by-Jolt-06C?logo=github&logoColor=white)](https://github.com/bazaarvoice/jolt)
 
-<br>
+![JsonWeaver Banner](https://via.placeholder.com/800x300?text=JSON+Weaver+Visual+Transformer)
 
-<p align='center'>
-<b>English</b> | <a href="https://github.com/nekobc1998923/vitecamp/blob/master/README.zh-CN.md">简体中文</a>
-</p>
+## 简介
 
-<br>
+JsonWeaver 是一个基于 [Jolt](https://github.com/bazaarvoice/jolt) 引擎构建的可视化 JSON 结构转换工具，通过直观的界面将一种 JSON 格式转换为另一种 JSON 格式。支持实时预览、主题切换和示例演示，适用于 API 数据适配、配置转换等场景。
 
-## Features
+## 核心功能
 
-- ⚡️ [Vue 3](https://github.com/vuejs/core), [Vite 3](https://github.com/vitejs/vite), [pnpm](https://pnpm.io/), [ESBuild](https://github.com/evanw/esbuild) - fast and faster !
-- 💪 [Typescript](https://www.typescriptlang.org/) - of course! necessary
-- 🎉 [Element Plus ready](https://github.com/element-plus/element-plus) - UI Library based on Vue.js 3
-- 🔥 [Axios](https://github.com/axios/axios) - Http Library based on Promise
-- 💡 [Vue Router 4](https://router.vuejs.org/zh/) - The official router for Vue.js
-- 📦 [Components auto importing](https://github.com/antfu/unplugin-vue-components) - Automatically register components on demand without import
-- 📥 [Auto import APIs](https://github.com/antfu/unplugin-auto-import) - Automatically import APIs
-- 🍍 [State Management via Pinia](https://pinia.esm.dev/) - The Vue Store that you will enjoy using
-- 🎨 [Windi CSS](https://github.com/windicss/windicss) - next generation utility-first CSS framework
-- 😃 [icones](https://github.com/antfu/unplugin-icons) - Powerful Icon Library, Use icons from any icon sets
-- 🌍 [I18n ready](./locales) - Want to translate? Yes, you can!
-- 👩‍🎨 [NProgress](https://github.com/rstacruz/nprogress) - Page loading progress feedback
-- 😃 [SVG Support](https://github.com/jpkleemans/vite-svg-loader) - Support the use of SVG images as components
-- 📑 [Markdown Support](https://github.com/antfu/vite-plugin-md) - Markdown as components / components in Markdown
-- 🔑 Complete code style specification and code submission specification
-- ☁️ Deploy on Netlify, zero-config
+✨ **JSON 格式双向转换**  
+✨ **可视化配置编辑器**  
+✨ **实时转换结果预览**  
+✨ **深色/浅色主题切换**  
+✨ **内置示例演示系统**  
+✨ **支持复杂嵌套结构处理**  
+✨ **基于 Jolt 引擎的强大转换能力**
 
-## Pre-packed
+## 技术栈
 
-### UI Frameworks
+| 技术        | 版本/说明                                                       |
+| ----------- | --------------------------------------------------------------- |
+| 前端框架    | Vue 3 + TypeScript                                              |
+| 状态管理    | [Pinia](https://pinia.vuejs.org/)                               |
+| UI 组件     | [Element Plus](https://element-plus.org/)                       |
+| JSON 编辑器 | [vue3-json-editor](https://github.com/vaakian/vue3-json-editor) |
+| 构建工具    | [Vite](https://vitejs.dev/)                                     |
+| 样式处理    | Sass + [Windi CSS](https://windicss.org/)                       |
+| 转换引擎    | [Jolt](https://github.com/bazaarvoice/jolt)                     |
 
-- [Windi CSS](https://github.com/windicss/windicss) (On-demand [TailwindCSS](https://tailwindcss.com/)) - lighter and faster, with a bunch of additional features
-  - [Windi CSS Typography](https://windicss.org/plugins/official/typography.html)
-- [Element Plus](https://github.com/element-plus/element-plus) - A powerful Vue.js 3 UI Library
+## 快速开始
 
-### Icons
-
-- [🔍Icônes](https://icones.netlify.app/) - use icons from any icon sets
-  - [unplugin-icons](https://github.com/antfu/unplugin-icons) - Automatically introduce the icons you need on demand
-
-### Plugins
-
-- [Vue Router 4](https://router.vuejs.org/zh/) - The official router for Vue.js
-- [Pinia](https://pinia.esm.dev) - The Vue Store that you will enjoy using
-- [Axios](https://github.com/axios/axios) - Http Library based on Promise
-- [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components) - components auto import
-- [unplugin-auto-import](https://github.com/antfu/unplugin-auto-import) - Automatically import APIs
-- [vite-plugin-windicss](https://github.com/antfu/vite-plugin-windicss) - Windi CSS Integration
-- [vite-plugin-vue-markdown](https://github.com/antfu/vite-plugin-vue-markdown) - Markdown as components / components in Markdown
-  - [markdown-it-prism](https://github.com/jGleitz/markdown-it-prism) - [Prism](https://prismjs.com/) for syntax highlighting
-  - [prism-theme-vars](https://github.com/antfu/prism-theme-vars) - customizable Prism.js theme using CSS variables
-  - [markdown-it-link-attributes](https://github.com/crookedneighbor/markdown-it-link-attributes) - Uniformly set the hyperlink jump mode in markdown
-- [Vue I18n](https://github.com/intlify/vue-i18n-next) - Internationalization
-  - [vite-plugin-vue-i18n](https://github.com/intlify/vite-plugin-vue-i18n) - Vite plugin for Vue I18n
-- [vite-plugin-fonts](https://github.com/stafyniaksacha/vite-plugin-fonts) - Vite's font loader
-- [VueUse](https://github.com/antfu/vueuse) - Collection of useful composition APIs
-- [vite-svg-loader](https://github.com/jpkleemans/vite-svg-loader) - Support the use of SVG images as components
-
-### Coding Style
-
-- [ESLint](https://eslint.org/) with [Airbnb Style](https://github.com/airbnb/javascript)
-
-### Dev tools
-
-- [TypeScript](https://www.typescriptlang.org/)
-- [Netlify](https://www.netlify.com/) - zero-config deployment
-- [VS Code Extensions](./.vscode/extensions.json)
-  - [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) -Vue 3 IDE support
-  - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify) - Icon inline display and autocomplete
-  - [i18n Ally](https://marketplace.visualstudio.com/items?itemName=lokalise.i18n-ally) - All in one i18n support
-  - [Windi CSS Intellisense](https://marketplace.visualstudio.com/items?itemName=voorjaar.windicss-intellisense) - IDE support for Windi CSS
-  - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - Code quality and rule checking
-  - [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - Focus on code formatting and beautifying code
-  - [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig) - Coding style check
-
-## Try it now!
-
-### GitHub Template
-
-[Create a repo from this template on GitHub](https://github.com/nekobc1998923/vitecamp/generate).
-
-### Clone to local
+### 安装依赖
 
 ```bash
-git clone https://github.com/nekobc1998923/vitecamp.git my-vitecamp-app
-cd my-vitecamp-app
-pnpm i
+pnpm install
 ```
-
-## Checklist
-
-When you use this template, try follow the checklist to update your info properly
-
-- [ ] Change the author name in `LICENSE`
-- [ ] Change the author name in `package.json`
-- [ ] Change the title in `.env`
-- [ ] Change the favicon in `public`
-- [ ] Clean up the `README` and remove routes
-
-And then , you can enjoy coding fun :)
-
-## Usage
-
-### Development
-
-Just run and visit http://localhost:8080
-
-```bash
-pnpm run dev
-```
-
-### Build
-
-To build the App, run
-
-```bash
-pnpm run build
-```
-
-And you will see the generated file in `dist` that ready to be served.
-
-## Thanks
-
-This template has some features inspired by [Vitesse](https://github.com/antfu/vitesse) ❤

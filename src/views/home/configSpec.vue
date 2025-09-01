@@ -5,16 +5,15 @@
       <el-table-column prop="name" label="Name" sortable show-overflow-tooltip />
       <el-table-column prop="type" label="值类型" sortable show-overflow-tooltip />
       <el-table-column prop="value" label="值" sortable width="100px" show-overflow-tooltip />
-      <el-table-column label="转换规则">
+      <!-- <el-table-column label="转换规则">
         <template #default="scope">
           <el-button :icon="CopyDocument" circle @click="CopyToClipboard(scope.row)" style="margin: 5px" />
-          <!-- <span >{{formatter(scope.row)}}</span> -->
           <el-tag v-if="scope.row.spec">规则</el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button type="primary" @click="handleConfigSpecClick(scope.row)">配置规则</el-button>
+          <el-button :type="scope.row.spec ? 'success' : 'primary'" @click="handleConfigSpecClick(scope.row)">规则</el-button>
         </template>
       </el-table-column>
     </el-table>

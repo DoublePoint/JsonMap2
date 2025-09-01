@@ -266,7 +266,6 @@ function isPlainObject(item: any): item is Record<string, any> {
 
 export function build$(param1: string, param2?: string) {
   if (!param1) {
-    debugger;
     return `$(error)`;
   }
   if (param2) {

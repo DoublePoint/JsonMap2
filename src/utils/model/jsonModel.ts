@@ -158,7 +158,6 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
   }
 
   buildOutputPathExpression() {
-    debugger;
     let upperCode = '';
     if (this._currentNode && this._rootNode) {
       this.getAncestor();

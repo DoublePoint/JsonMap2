@@ -3,11 +3,19 @@
     <el-container>
       <el-header class="ll-header">
         <el-row :gutter="20" class="ll-row">
-          <el-col :span="20"> <h1 class="page-title">JSON Mapper</h1> </el-col>
+          <el-col :span="20"> <h1 class="page-title">JSON Weaver</h1> </el-col>
           <el-col :span="4"
             ><div class="header-right">
               <a href="https://github.com/your-username/JsonMap2" target="_blank" class="github-link" title="查看 GitHub 仓库">
-                <el-icon :size="20" class="github-icon"><Link /></el-icon>
+                <el-icon :size="20" class="github-icon">
+                  <svg t="1756723113695" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1609" width="200" height="200">
+                    <path
+                      d="M498.894518 100.608396c-211.824383 0-409.482115 189.041494-409.482115 422.192601 0 186.567139 127.312594 344.783581 295.065226 400.602887 21.13025 3.916193 32.039717-9.17701 32.039717-20.307512 0-10.101055 1.176802-43.343157 1.019213-78.596056-117.448946 25.564235-141.394311-49.835012-141.394311-49.835012-19.225877-48.805566-46.503127-61.793368-46.503127-61.793368-38.293141-26.233478 3.13848-25.611308 3.13848-25.611308 42.361807 2.933819 64.779376 43.443441 64.779376 43.443441 37.669948 64.574714 98.842169 45.865607 122.912377 35.094286 3.815909-27.262924 14.764262-45.918819 26.823925-56.431244-93.796246-10.665921-192.323237-46.90017-192.323237-208.673623 0-46.071292 16.498766-83.747379 43.449581-113.332185-4.379751-10.665921-18.805298-53.544497 4.076852-111.732757 0 0 35.46063-11.336186 116.16265 43.296085 33.653471-9.330506 69.783343-14.022365 105.654318-14.174837 35.869952 0.153496 72.046896 4.844332 105.753579 14.174837 80.606853-54.631248 116.00813-43.296085 116.00813-43.296085 22.935362 58.18826 8.559956 101.120049 4.180206 111.732757 27.052123 29.584806 43.443441 67.260893 43.443441 113.332185 0 162.137751-98.798167 197.850114-192.799074 208.262254 15.151072 13.088086 28.65155 38.804794 28.65155 78.17957 0 56.484456-0.459464 101.94381-0.459464 115.854635 0 11.235902 7.573489 24.381293 29.014824 20.2543C825.753867 867.330798 933.822165 709.10924 933.822165 522.700713c0-233.155201-224.12657-422.192601-434.927647-422.192601L498.894518 100.608396z"
+                      :fill="isDarkTheme ? '#ffffff' : '#3F3F3F'"
+                      p-id="1610"
+                    ></path>
+                  </svg>
+                </el-icon>
               </a>
               <el-switch v-model="isDarkTheme" inline-prompt @change="toggleTheme" class="theme-switch">
                 <template #active-action>
@@ -22,30 +30,27 @@
       </el-header>
       <el-main class="ll-main">
         <el-splitter>
-          <el-splitter-panel size="20%"
-            ><div class="panel-header">输入 JSON</div>
+          <el-splitter-panel size="20%" collapsible>
+            <div class="panel-header">输入 JSON</div>
 
             <div class="demo-panel">
               <Vue3JsonEditor class="ll-json-editor" v-model="inputJson" :show-btns="false" :expandedOnStart="true" @json-change="onInputJsonChange" mode="code" />
             </div>
           </el-splitter-panel>
-          <el-splitter-panel size="40%"
+          <el-splitter-panel size="40%" collapsible
             ><div class="panel-header">
               <span>配置规范</span>
-              <el-button type="primary" @click="copyTree" size="small">复制树结构</el-button>
+              <!-- <el-button type="primary" @click="copyTree" size="small">复制树结构</el-button> -->
+              <el-button type="primary" @click="dialogShowSpec = true" size="small">查看规则表达式</el-button>
             </div>
             <div class="demo-panel">
               <configSpec v-model:data="treeJson" @onDataChange="handleTreeChange"></configSpec>
             </div>
           </el-splitter-panel>
-          <el-splitter-panel size="20%"
-            ><div class="panel-header">规范输出</div>
-
-            <div class="demo-panel">
-              <Vue3JsonEditor v-model="formatedSpec" :show-btns="false" :expandedOnStart="true" mode="code" />
-            </div>
-          </el-splitter-panel>
-          <el-splitter-panel size="20%"
+          <!-- <el-splitter-panel size="20%"
+            >
+          </el-splitter-panel> -->
+          <el-splitter-panel size="20%" collapsible
             ><div class="panel-header">结果 JSON</div>
 
             <div class="demo-panel">
@@ -66,6 +71,9 @@
       </el-footer>
     </el-container>
   </div>
+  <el-drawer v-model="dialogShowSpec" title="规则表达式" :direction="'rtl'">
+    <Vue3JsonEditor v-model="formatedSpec" :show-btns="false" style="height: 100%" :expandedOnStart="true" mode="code" />
+  </el-drawer>
 </template>
 <script setup lang="ts">
 // import { defineComponent, reactive, toRefs } from 'vue'
@@ -86,6 +94,7 @@ const treeJson = ref<JsonTreeModel[]>([]);
 const formatedSpec = ref([]);
 const innAllDemo = ref(ALL_DEMO);
 const activeDemoId = ref('');
+const dialogShowSpec = ref(false);
 // 添加主题状态
 const isDarkTheme = ref(false);
 
@@ -221,8 +230,7 @@ const applyTheme = (isDark: boolean) => {
   align-items: center;
   padding: 8px 12px;
   background-color: var(--el-fill-color-light);
-  border-bottom: 1px solid var(--el-border-color);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--el-text-color-primary);
   font-size: 14px;
   height: 37px;
@@ -282,7 +290,6 @@ const applyTheme = (isDark: boolean) => {
   height: 24px;
   min-width: 80px;
   float: right;
-  margin-top: 10px;
 }
 
 .theme-switch :deep(.el-switch__core) {
@@ -425,7 +432,6 @@ const applyTheme = (isDark: boolean) => {
 
 .demo-panel {
   height: calc(100% - 37px);
-  padding: 0 5px;
 }
 
 /* 深色主题下的分割面板样式 */
@@ -434,6 +440,60 @@ const applyTheme = (isDark: boolean) => {
 }
 .ace-jsoneditor,
 .jsoneditor-outer {
-  height: 600px !important;
+  min-height: 400px !important;
+}
+</style>
+
+<style>
+/* JSON编辑器浅色主题适配 */
+.light .ace-jsoneditor {
+  background-color: #ffffff;
+}
+
+.light .ace-jsoneditor .ace_gutter {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.light .ace-jsoneditor .ace_scroller {
+  background-color: #ffffff;
+}
+
+.light .jsoneditor-menu {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.light .jsoneditor {
+  background-color: #ffffff;
+  /* border: 1px solid #e0e0e0; */
+}
+
+.light .jsoneditor-tree {
+  background-color: #ffffff;
+  color: #333;
+}
+
+.light .jsoneditor-field,
+.light .jsoneditor-value {
+  color: #333;
+}
+.light .panel-header {
+  background-color: #3883fa;
+  color: #ffffff;
+}
+.jsoneditor-vue {
+  height: 100%;
+}
+.el-splitter-bar {
+  margin: 0 5px !important;
+}
+.light .demo-panel {
+  border: 0px solid #3883fa;
+}
+div.jsoneditor {
+  border: 0px solid #3883fa !important;
+}
+.el-splitter-panel {
+  box-shadow: var(--el-box-shadow-light);
 }
 </style>

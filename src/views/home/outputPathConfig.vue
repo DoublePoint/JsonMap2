@@ -63,7 +63,6 @@ onMounted(() => {
 });
 // ✅ 响应式同步
 const innExpression = computed(() => {
-  debugger;
   return props.data;
 });
 
