@@ -102,12 +102,10 @@ onMounted(() => {
   init();
   inputToTreeAndTransform();
 
-  // 检查本地存储的主题设置
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    isDarkTheme.value = savedTheme === 'dark';
-    applyTheme(savedTheme === 'dark');
-  }
+  // 强制设置为亮色主题
+  isDarkTheme.value = false;
+  applyTheme(false);
+  localStorage.setItem('theme', 'light');
 });
 
 function init() {
