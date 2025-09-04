@@ -1,0 +1,309 @@
+const demo12 = {
+  "name": "根据叶子节点的值从数组中过滤数据",
+  "data": {
+    "input": {
+      "books": [
+        {
+          "title": "foo",
+          "availability": [
+            "online"
+          ]
+        },
+        {
+          "title": "bar",
+          "availability": [
+            "online",
+            "paperback"
+          ]
+        },
+        {
+          "title": "baz",
+          "availability": [
+            "paperback"
+          ]
+        }
+      ]
+    },
+    "spec": [
+      [
+        "1"
+      ],
+      {
+        "id": "2",
+        "code": "3",
+        "name": "3",
+        "type": "4",
+        "children": "5"
+      },
+      "1",
+      "books",
+      "object",
+      [
+        "6",
+        "7",
+        "8"
+      ],
+      {
+        "id": "9",
+        "code": "10",
+        "name": "10",
+        "type": "11",
+        "index": 0,
+        "children": "12"
+      },
+      {
+        "id": "13",
+        "code": "14",
+        "name": "14",
+        "type": "11",
+        "index": 1,
+        "children": "15",
+        "spec": "16"
+      },
+      {
+        "id": "17",
+        "code": "18",
+        "name": "18",
+        "type": "11",
+        "index": 2,
+        "children": "19"
+      },
+      "1-1",
+      "item_0",
+      "array",
+      [
+        "20",
+        "21"
+      ],
+      "1-2",
+      "item_1",
+      [
+        "22",
+        "23"
+      ],
+      {
+        "specList": "24"
+      },
+      "1-3",
+      "item_2",
+      [
+        "25",
+        "26"
+      ],
+      {
+        "id": "27",
+        "code": "28",
+        "name": "28",
+        "type": "29",
+        "value": "30"
+      },
+      {
+        "id": "31",
+        "code": "32",
+        "name": "32",
+        "type": "4",
+        "children": "33"
+      },
+      {
+        "id": "34",
+        "code": "28",
+        "name": "28",
+        "type": "29",
+        "value": "35"
+      },
+      {
+        "id": "36",
+        "code": "32",
+        "name": "32",
+        "type": "4",
+        "children": "37"
+      },
+      [
+        "38"
+      ],
+      {
+        "id": "39",
+        "code": "28",
+        "name": "28",
+        "type": "29",
+        "value": "40"
+      },
+      {
+        "id": "41",
+        "code": "32",
+        "name": "32",
+        "type": "4",
+        "children": "42"
+      },
+      "1-1-1",
+      "title",
+      "string",
+      "foo",
+      "1-1-2",
+      "availability",
+      [
+        "43"
+      ],
+      "1-2-1",
+      "bar",
+      "1-2-2",
+      [
+        "44",
+        "45"
+      ],
+      {
+        "title": "46",
+        "whereExpression": "47",
+        "keySelectType": "2",
+        "nodeKeyExpression": "48",
+        "nodeKeyExpressionParam1": "49",
+        "nodeKeyExpressionParam2": "50",
+        "outputKeyOrValueType": "51",
+        "outputKeys": "52",
+        "outputKeysExpressions": "53",
+        "outputValuesExpressions": "54",
+        "outputConstValuesExpressions": "55",
+        "outputPathExpression": "50",
+        "outputPathType": "49",
+        "outputPathExpressionParam1": "50",
+        "outputPathExpressionParam2": "50"
+      },
+      "1-3-1",
+      "baz",
+      "1-3-2",
+      [
+        "56"
+      ],
+      {
+        "id": "57",
+        "code": "10",
+        "name": "10",
+        "type": "11",
+        "index": 0,
+        "value": "58"
+      },
+      {
+        "id": "59",
+        "code": "10",
+        "name": "10",
+        "type": "11",
+        "value": "58",
+        "index": 0
+      },
+      {
+        "id": "60",
+        "code": "14",
+        "name": "14",
+        "type": "11",
+        "value": "61",
+        "spec": "62",
+        "index": 1
+      },
+      "规则",
+      {},
+      "*",
+      "0",
+      "",
+      [
+        "2"
+      ],
+      [
+        "49"
+      ],
+      [],
+      [
+        "63"
+      ],
+      [],
+      {
+        "id": "64",
+        "code": "10",
+        "name": "10",
+        "type": "11",
+        "index": 0,
+        "value": "61"
+      },
+      "1-1-2-1",
+      "online",
+      "1-2-2-1",
+      "1-2-2-2",
+      "paperback",
+      {
+        "specList": "65"
+      },
+      {
+        "outputPathType": "49",
+        "outputPathExpression": "50",
+        "_outputPathExpressionPre": "50",
+        "_outputPathExpressionParam1": "50",
+        "_outputPathExpressionParam1Node": "7",
+        "_outputPathExpressionParam2": "50",
+        "_outputPathExpressionSuf": "50",
+        "_outputPathIsContainUpperNode": true,
+        "_currentNode": "66",
+        "_rootNode": "0"
+      },
+      "1-3-2-1",
+      [
+        "67"
+      ],
+      {
+        "id": "13",
+        "code": "14",
+        "name": "14",
+        "type": "11",
+        "spec": "16",
+        "children": "15",
+        "index": 1
+      },
+      {
+        "title": "46",
+        "whereExpression": "68",
+        "keySelectType": "69",
+        "nodeKeyExpression": "70",
+        "nodeKeyExpressionParam1": "69",
+        "nodeKeyExpressionParam2": "50",
+        "outputKeyOrValueType": "71",
+        "outputKeys": "72",
+        "outputKeysExpressions": "73",
+        "outputValuesExpressions": "74",
+        "outputConstValuesExpressions": "75",
+        "outputPathExpression": "50",
+        "outputPathType": "49",
+        "outputPathExpressionParam1": "50",
+        "outputPathExpressionParam2": "50"
+      },
+      {
+        "whereExpression": "61"
+      },
+      "3",
+      "@(3)",
+      [
+        "2"
+      ],
+      [
+        "49"
+      ],
+      [],
+      [
+        "76"
+      ],
+      [],
+      {
+        "outputPathType": "49",
+        "outputPathExpression": "77",
+        "_outputPathExpressionPre": "50",
+        "_outputPathExpressionParam1": "50",
+        "_outputPathExpressionParam1Node": "45",
+        "_outputPathExpressionParam2": "50",
+        "_outputPathExpressionSuf": "50",
+        "_outputPathIsContainUpperNode": true,
+        "_currentNode": "45",
+        "_rootNode": "0"
+      },
+      "PaperBooks[]"
+    ]
+  },
+  "id": "13"
+};
+export default demo12;

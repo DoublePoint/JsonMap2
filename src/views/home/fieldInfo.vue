@@ -4,7 +4,7 @@
       <el-icon @click="fieldInfoDialogVisible = true"><InfoFilled /></el-icon>
     </template>
   </el-popover> -->
-  <el-tooltip :content="fieldMeta.fieldDesc" effect="customized">
+  <el-tooltip :content="fieldMeta.fieldDesc" effect="customized" raw-content>
     <el-icon @click="fieldInfoDialogVisible = true"><InfoFilled /></el-icon>
   </el-tooltip>
 </template>
@@ -13,7 +13,7 @@
 import { ref } from 'vue';
 import { InfoFilled } from '@element-plus/icons-vue';
 import { CONST_FILED_INFO_ITEMS } from '../../utils/constant';
-import { FieldInfo } from '@/utils/model/jsonModel';
+import { IFieldInfo } from '@/utils/model/jsonModelInterface';
 
 /* props */
 interface Props {
@@ -22,7 +22,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {});
 
 const fieldInfoDialogVisible = ref(false);
-const fieldMeta = ref<FieldInfo>(
+const fieldMeta = ref<IFieldInfo>(
   !CONST_FILED_INFO_ITEMS[props.fieldCode as keyof typeof CONST_FILED_INFO_ITEMS]
     ? CONST_FILED_INFO_ITEMS.UNKONWFIELD
     : CONST_FILED_INFO_ITEMS[props.fieldCode as keyof typeof CONST_FILED_INFO_ITEMS],

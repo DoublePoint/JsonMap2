@@ -40,7 +40,7 @@
           <el-splitter-panel size="40%" collapsible
             ><div class="panel-header">
               <span>配置规范</span>
-              <!-- <el-button type="primary" @click="copyTree" size="small">复制树结构</el-button> -->
+              <el-button type="primary" @click="copyTree" size="small">复制树结构</el-button>
               <el-button type="primary" @click="dialogShowSpec = true" size="small">查看规则表达式</el-button>
             </div>
             <div class="demo-panel">
@@ -49,7 +49,8 @@
           </el-splitter-panel>
           <!-- <el-splitter-panel size="20%"
             >
-          </el-splitter-panel> -->
+            <Vue3JsonEditor v-model="formatedSpec" :show-btns="false" style="height: 100%" :expandedOnStart="true" mode="code" />
+          </el-splitter-panel>  -->
           <el-splitter-panel size="20%" collapsible
             ><div class="panel-header">结果 JSON</div>
 
@@ -64,14 +65,28 @@
           <el-descriptions title="示例" border />
           <ul>
             <li v-for="(item, index) in innAllDemo">
-              <el-link type="primary" @click="handleDemoClick(item)" :underline="item.id == activeDemoId" style="color: '#337ab7'">{{ index + 1 + ': ' + item.name }}</el-link>
+              <el-link
+                type="primary"
+                @click="handleDemoClick(item)"
+                :underline="item.id == activeDemoId"
+                :style="{
+                  color: '#337ab7',
+                  backgroundColor: item.id === activeDemoId ? 'var(--el-color-primary-light-9)' : 'transparent',
+                  padding: '4px 8px',
+                  borderRadius: '4px',
+                  display: 'inline-block',
+                  width: '100%',
+                }"
+              >
+                {{ index + 1 + ': ' + item.name }}
+              </el-link>
             </li>
           </ul>
         </el-card>
       </el-footer>
     </el-container>
   </div>
-  <el-drawer v-model="dialogShowSpec" title="规则表达式" :direction="'rtl'">
+  <el-drawer v-model="dialogShowSpec" title="规则表达式" :direction="'rtl'" destroy-on-close>
     <Vue3JsonEditor v-model="formatedSpec" :show-btns="false" style="height: 100%" :expandedOnStart="true" mode="code" />
   </el-drawer>
 </template>
@@ -84,7 +99,7 @@ import { JsonTreeModel } from '../../utils/model/jsonModel';
 import { Moon, Sunny, Link } from '@element-plus/icons-vue';
 
 import joltApi from '@/api/modules/jsonMap';
-import { ALL_DEMO, DemoItem } from '@/assets/data/data';
+import { ALL_DEMO } from '@/assets/data/data';
 import { parse, stringify } from 'flatted';
 import { plainToInstance } from 'class-transformer';
 
@@ -100,7 +115,7 @@ const isDarkTheme = ref(false);
 
 onMounted(() => {
   init();
-  inputToTreeAndTransform();
+  // inputToTreeAndTransform();
 
   // 强制设置为亮色主题
   isDarkTheme.value = false;

@@ -79,8 +79,9 @@ export class SpecDetail implements ISpecDetail {
 
 export class OutputPathExpression implements IBaseOutputPathExpression {
   outputPathType: string;
-  outputPathExpression: string = '';
+  _outputPathExpression: string = '';
   _outputPathExpressionPre: string = '';
+  _outputPathExpressionArrayParam1: string = '';
   _outputPathExpressionParam1: string = '';
   _outputPathExpressionParam1Node?: JsonTreeModel;
   _outputPathExpressionParam2: string = '';
@@ -91,6 +92,25 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
     this.outputPathType = Constant.CONST_OUTPUT_PATH_TYPE.DIRECT_INPUT;
     this.buildOutputPathExpression();
   }
+
+  get outputPathExpression(): string {
+    return this._outputPathExpression;
+  }
+
+  set outputPathExpression(value: string) {
+    this._outputPathExpression = value;
+  }
+
+
+  get outputPathExpressionArrayParam1(): string {
+    return this._outputPathExpressionArrayParam1;
+  }
+
+  set outputPathExpressionArrayParam1(value: string) {
+    this._outputPathExpressionArrayParam1 = value;
+    this.buildOutputPathExpression();
+  }
+
 
   get outputPathIsContainUpperNode(): boolean {
     return this._outputPathIsContainUpperNode;
@@ -114,7 +134,6 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
   }
   set currentNode(value: JsonTreeModel) {
     this._currentNode = value;
-    this.buildOutputPathExpression();
   }
 
   get rootNode(): JsonTreeModel[] {
@@ -122,10 +141,9 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
   }
   set rootNode(value: JsonTreeModel[]) {
     this._rootNode = value;
-    this.buildOutputPathExpression();
   }
 
-  get outputPathExpressionPre(): string | undefined {
+  get outputPathExpressionPre(): string {
     return this._outputPathExpressionPre;
   }
   set outputPathExpressionPre(value: string) {
@@ -157,6 +175,10 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
     this.buildOutputPathExpression();
   }
 
+  isPreArr(): boolean {
+    return this._outputPathExpressionPre.includes('[]');
+  }
+
   buildOutputPathExpression() {
     let upperCode = '';
     if (this._currentNode && this._rootNode) {
@@ -166,29 +188,35 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
         // upperCode = replaceSpecialCharacters(upperCode);
       }
     }
-    const pre = this.outputPathExpressionPre;
+    let pre = this.outputPathExpressionPre;
+    if (this.isPreArr()) {
+      //如果前缀是数组，则将数组[]字符中第一个[]替换为[${this._outputPathExpressionArrayParam1}]
+      pre = pre.replace('[]', `[#${this._outputPathExpressionArrayParam1}]`);
+    }
     const param1 = this.outputPathExpressionParam1;
     const param2 = this.outputPathExpressionParam2;
     const suf = this.outputPathExpressionSuf;
 
     if (this.outputPathType === Constant.CONST_OUTPUT_PATH_TYPE.BY_KEY) {
       if (!param1 && !param2) {
-        this.outputPathExpression = `${pre}${upperCode}&${suf}`;
+        this._outputPathExpression = `${pre}${upperCode}&${suf}`;
       } else if (param2) {
-        this.outputPathExpression = `${pre}${upperCode}&(${param1},${param2})${suf}`;
+        this._outputPathExpression = `${pre}${upperCode}&(${param1},${param2})${suf}`;
       } else {
-        this.outputPathExpression = `${pre}${upperCode}&(${param1})${suf}`;
+        this._outputPathExpression = `${pre}${upperCode}&(${param1})${suf}`;
       }
     } else if (this.outputPathType === Constant.CONST_OUTPUT_PATH_TYPE.BY_PROP) {
       if (!param1 && !param2) {
-        this.outputPathExpression = `${pre}${upperCode}@${suf}`;
+        this._outputPathExpression = `${pre}${upperCode}${suf}`;
       } else if (param2) {
-        this.outputPathExpression = `${pre}${upperCode}@(${param1},${param2})${suf}`;
+        this._outputPathExpression = `${pre}${upperCode}@(${param1},${param2})${suf}`;
+      } else if (param1) {
+        this._outputPathExpression = `${pre}${upperCode}@(${param1})${suf}`;
       } else {
-        this.outputPathExpression = `${pre}${upperCode}@(${param1})${suf}`;
+        this._outputPathExpression = `${pre}${upperCode}${suf}`;
       }
     } else {
-      this.outputPathExpression = '';
+      this._outputPathExpression = '';
     }
   }
 
@@ -287,4 +315,4 @@ export class OutputConstValueExpression extends OutputPathExpression implements 
   }
 }
 
-export class WhereExpression implements IWhereExpression {}
+export class WhereExpression implements IWhereExpression { }

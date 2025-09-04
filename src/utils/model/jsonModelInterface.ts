@@ -13,7 +13,7 @@ export interface IOutputKeyExpression extends IBaseOutputPathExpression {
   outputKeyExpressionParam2?: string;
   outputKeyExpression: string;
 }
-export interface IOutputValueExpression extends IBaseOutputPathExpression {}
+export interface IOutputValueExpression extends IBaseOutputPathExpression { }
 
 export interface ISpecDetail {
   title?: string;
@@ -40,6 +40,7 @@ export interface IWhereExpression {
 export interface IDropBean {
   value: string;
   label: string;
+  disable: boolean;
 }
 
 export interface IOutputConstValueExpression extends IBaseOutputPathExpression {

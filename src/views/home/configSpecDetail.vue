@@ -16,11 +16,11 @@ $(
     <!-- #region 输出条件信息-->
     <el-button type="primary" :icon="Plus" circle @click="handleAddSpec" style="margin: 10px" />
     <!-- endregion 输出条件信息-->
-
+    {{ innSpec?.specList?.length }}
     <el-tabs editable type="border-card" v-model="tabActiveName">
       <el-tab-pane v-for="(specDetail, index) in innSpec.specList" :label="specDetail.title + (index + 1) + ' : [' + (specDetail.whereExpression.whereExpression || '') + ']'" :name="index + ''">
         <el-card class="ll-card" shadow="always">
-          <el-descriptions title="输出条件配置" border />
+          <el-descriptions title="输出条件配置" border /> 
           <field-info fieldCode="1"></field-info>
           <el-input v-model="specDetail.whereExpression.whereExpression" style="width: 240px" @input="handleWhereExpressionChange" placeholder="当值为输入内容时输出"></el-input>
           <el-tag v-if="specDetail.whereExpression.whereExpression">当值 = {{ specDetail.whereExpression.whereExpression }} 时输出</el-tag>
@@ -161,10 +161,12 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {});
-const innSpec = ref();
+const innSpec = computed(() => {
+  return props.node.spec;
+});
 // ✅ 响应式同步
 const innNode = computed(() => {
-  innSpec.value = props.node.spec;
+  // innSpec.value = props.node.spec;
   return props.node;
 });
 

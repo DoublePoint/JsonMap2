@@ -1,0 +1,195 @@
+const demo11 = {
+  "name": "根据叶子节点的值创建数组",
+  "data": {
+    "input": {
+      "entities": [
+        {
+          "type": "alpha",
+          "data": "foo"
+        },
+        {
+          "type": "beta",
+          "data": "bar"
+        },
+        {
+          "type": "alpha",
+          "data": "zoo"
+        }
+      ]
+    },
+    "spec": [
+      [
+        "1"
+      ],
+      {
+        "id": "2",
+        "code": "3",
+        "name": "3",
+        "type": "4",
+        "children": "5"
+      },
+      "1",
+      "entities",
+      "object",
+      [
+        "6",
+        "7",
+        "8"
+      ],
+      {
+        "id": "9",
+        "code": "10",
+        "name": "10",
+        "type": "11",
+        "index": 0,
+        "children": "12",
+        "spec": "13"
+      },
+      {
+        "id": "14",
+        "code": "15",
+        "name": "15",
+        "type": "11",
+        "index": 1,
+        "children": "16"
+      },
+      {
+        "id": "17",
+        "code": "18",
+        "name": "18",
+        "type": "11",
+        "index": 2,
+        "children": "19"
+      },
+      "1-1",
+      "item_0",
+      "array",
+      [
+        "20",
+        "21"
+      ],
+      {
+        "specList": "22"
+      },
+      "1-2",
+      "item_1",
+      [
+        "23",
+        "24"
+      ],
+      "1-3",
+      "item_2",
+      [
+        "25",
+        "26"
+      ],
+      {
+        "id": "27",
+        "code": "28",
+        "name": "28",
+        "type": "29",
+        "value": "30"
+      },
+      {
+        "id": "31",
+        "code": "32",
+        "name": "32",
+        "type": "29",
+        "value": "33"
+      },
+      [
+        "34"
+      ],
+      {
+        "id": "35",
+        "code": "28",
+        "name": "28",
+        "type": "29",
+        "value": "36"
+      },
+      {
+        "id": "37",
+        "code": "32",
+        "name": "32",
+        "type": "29",
+        "value": "38"
+      },
+      {
+        "id": "39",
+        "code": "28",
+        "name": "28",
+        "type": "29",
+        "value": "30"
+      },
+      {
+        "id": "40",
+        "code": "32",
+        "name": "32",
+        "type": "29",
+        "value": "41"
+      },
+      "1-1-1",
+      "type",
+      "string",
+      "alpha",
+      "1-1-2",
+      "data",
+      "foo",
+      {
+        "title": "42",
+        "whereExpression": "43",
+        "keySelectType": "2",
+        "nodeKeyExpression": "44",
+        "nodeKeyExpressionParam1": "45",
+        "nodeKeyExpressionParam2": "46",
+        "outputKeyOrValueType": "47",
+        "outputKeys": "48",
+        "outputKeysExpressions": "49",
+        "outputValuesExpressions": "50",
+        "outputConstValuesExpressions": "51",
+        "outputPathExpression": "46",
+        "outputPathType": "45",
+        "outputPathExpressionParam1": "46",
+        "outputPathExpressionParam2": "46"
+      },
+      "1-2-1",
+      "beta",
+      "1-2-2",
+      "bar",
+      "1-3-1",
+      "1-3-2",
+      "zoo",
+      "规则",
+      {},
+      "*",
+      "0",
+      "",
+      [
+        "2"
+      ],
+      [
+        "45"
+      ],
+      [],
+      [
+        "52"
+      ],
+      [],
+      {
+        "outputPathType": "45",
+        "outputPathExpression": "53",
+        "_outputPathExpressionPre": "46",
+        "_outputPathExpressionParam1": "46",
+        "_outputPathExpressionParam1Node": "6",
+        "_outputPathExpressionParam2": "46",
+        "_outputPathExpressionSuf": "46",
+        "_outputPathIsContainUpperNode": true,
+        "_currentNode": "6",
+        "_rootNode": "0"
+      },
+      "@(1,type)[]"
+    ]
+  },
+  "id": "12"
+};
+export default demo11;

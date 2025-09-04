@@ -72,4 +72,49 @@ export const CONST_FILED_INFO_ITEMS = {
     fieldType: '1',
     fieldDesc: '当字段值等于文本框中输入的内容时则输出数据，否则始终输出。',
   },
+  'OUTPUT_PATH_CONFIG_1': {
+    fieldCode: '1',
+    fieldName: '',
+    fieldType: '1',
+    fieldDesc: `目标路径的类型：
+      <br/>1、${CONST_OUTPUT_PATH_TYPE_ITEMS[0].label};
+      <br/>2、${CONST_OUTPUT_PATH_TYPE_ITEMS[1].label};
+      <br/>3、${CONST_OUTPUT_PATH_TYPE_ITEMS[2].label}`,
+  },
+  'OUTPUT_PATH_CONFIG_2': {
+    fieldCode: '1',
+    fieldName: '',
+    fieldType: '1',
+    fieldDesc: `目标路径的前缀`,
+  },
+  'OUTPUT_PATH_CONFIG_3': {
+    fieldCode: '1',
+    fieldName: '',
+    fieldType: '1',
+    fieldDesc: `向上几级`,
+  },
+  'OUTPUT_PATH_CONFIG_4_1': {
+    fieldCode: '1',
+    fieldName: '',
+    fieldType: '1',
+    fieldDesc: `匹配第几段`,
+  },
+  'OUTPUT_PATH_CONFIG_4_2': {
+    fieldCode: '1',
+    fieldName: '',
+    fieldType: '1',
+    fieldDesc: `向上几级后的节点的属性`,
+  },
+  'OUTPUT_PATH_CONFIG_5': {
+    fieldCode: '1',
+    fieldName: '',
+    fieldType: '1',
+    fieldDesc: `目标路径的后缀`,
+  },
+  'OUTPUT_PATH_CONFIG_99': {
+    fieldCode: '1',
+    fieldName: '',
+    fieldType: '1',
+    fieldDesc: `最终的目标路径表达式`,
+  },
 };
