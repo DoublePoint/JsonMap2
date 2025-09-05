@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="id" border highlight-current-row row-class-name="custom-row">
+    <el-table :data="tableData" style="width: 100%; margin-bottom: 0px; height: 435px" row-key="id" border highlight-current-row row-class-name="custom-row" default-expand-all>
       <el-table-column prop="id" label="ID" sortable show-overflow-tooltip />
       <el-table-column prop="name" label="Name" sortable show-overflow-tooltip />
       <el-table-column prop="type" label="值类型" sortable show-overflow-tooltip />
@@ -10,7 +10,7 @@
           <el-button :icon="CopyDocument" circle @click="CopyToClipboard(scope.row)" style="margin: 5px" />
           <el-tag v-if="scope.row.spec">规则</el-tag>
         </template>
-      </el-table-column> 
+      </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
           <el-button :type="scope.row.spec ? 'success' : 'primary'" @click="handleConfigSpecClick(scope.row)">规则</el-button>

@@ -9,18 +9,18 @@
   <div v-show="innExpression.outputPathType == CONST_OUTPUT_PATH_TYPE.BY_KEY">
     <field-info fieldCode="OUTPUT_PATH_CONFIG_2"></field-info>
     <el-input v-model="innExpression.outputPathExpressionPre" placeholder="前缀" style="width: 150px" @input="outputPathExpressionParamArrChange" />
-    
-    <el-select style="width: 200px; " v-model="innExpression.outputPathExpressionArrayParam1" @change="outputPathExpressionParamArrChange" placeholder="向上几级的Key">
-      <el-option v-for="(item, index) in getParam1Items" :label="'向上' + index + '级'" :value="index">
-        <span style="float: left">{{ '向上' + index + '级' }}</span>
+
+    <el-select style="width: 200px" v-model="innExpression.outputPathExpressionArrayParam1" @change="outputPathExpressionParamArrChange" placeholder="索引位置" v-if="innExpression.isPreArr()">
+      <el-option v-for="(item, index) in getParam1Items" :value="index">
+        <span style="float: left">{{ '向上' + index + '级节点所在索引' }}</span>
         <span style="float: right; color: var(--el-text-color-secondary); font-size: 13px">
           {{ item.name }}
         </span>
       </el-option>
     </el-select>
-    
+
     <field-info fieldCode="OUTPUT_PATH_CONFIG_3"></field-info>
-    <el-select style="width: 200px; " v-model="innExpression.outputPathExpressionParam1" @change="outputPathExpressionParamArrChange" placeholder="向上几级的Key">
+    <el-select style="width: 200px" v-model="innExpression.outputPathExpressionParam1" @change="outputPathExpressionParamArrChange" placeholder="向上几级的Key">
       <el-option v-for="(item, index) in getParam1Items" :label="'向上' + index + '级'" :value="index">
         <span style="float: left">{{ '向上' + index + '级' }}</span>
         <span style="float: right; color: var(--el-text-color-secondary); font-size: 13px">
@@ -29,10 +29,10 @@
       </el-option>
     </el-select>
     <field-info fieldCode="OUTPUT_PATH_CONFIG_4_1"></field-info>
-    <el-select style="width: 100px; " v-model="innExpression.outputPathExpressionParam2" @change="outputPathExpressionParamArrChange" placeholder="匹配的第几段">
+    <el-select style="width: 100px" v-model="innExpression.outputPathExpressionParam2" @change="outputPathExpressionParamArrChange" placeholder="匹配的第几段">
       <el-option v-for="item in levelItems" :label="item.label" :value="item.value"></el-option>
     </el-select>
-    <el-checkbox v-model="innExpression.outputPathIsContainUpperNode" >包含上级节点</el-checkbox>
+    <el-checkbox v-model="innExpression.outputPathIsContainUpperNode">包含上级节点</el-checkbox>
     <!-- {{ innExpression.outputPathExpressionParam1Node?.code }} -->
     <field-info fieldCode="OUTPUT_PATH_CONFIG_5"></field-info>
     <el-input v-model="innExpression.outputPathExpressionSuf" placeholder="后缀" style="width: 150px" @input="outputPathExpressionParamArrChange" />
@@ -42,17 +42,17 @@
   <div v-show="innExpression.outputPathType == CONST_OUTPUT_PATH_TYPE.BY_PROP">
     <field-info fieldCode="OUTPUT_PATH_CONFIG_2"></field-info>
     <el-input v-model="innExpression.outputPathExpressionPre" placeholder="前缀" style="width: 150px" @input="outputPathExpressionParamArrChange" />
-    
-    <el-select style="width: 200px; " v-model="innExpression.outputPathExpressionArrayParam1" @change="outputPathExpressionParamArrChange" placeholder="向上几级的Key">
-      <el-option v-for="(item, index) in getArrParam1Items" :label="'向上' + index + '级'" :value="index" :disabled="item.disable">
-        <span style="float: left">{{ '向上' + index + '级' }}</span>
+
+    <el-select style="width: 200px" v-model="innExpression.outputPathExpressionArrayParam1" @change="outputPathExpressionParamArrChange" placeholder="" v-if="innExpression.isPreArr()">
+      <el-option v-for="(item, index) in getArrParam1Items" :value="index" :disabled="item.disable">
+        <span style="float: left">{{ '向上' + index + '级节点所在索引' }}</span>
         <span style="float: right; color: var(--el-text-color-secondary); font-size: 13px">
           {{ item.label }}
         </span>
       </el-option>
     </el-select>
     <field-info fieldCode="OUTPUT_PATH_CONFIG_3"></field-info>
-    <el-select style="width: 200px; " v-model="innExpression.outputPathExpressionParam1" @change="outputPathExpressionParamArrChange" placeholder="向上几级的Key">
+    <el-select style="width: 200px" v-model="innExpression.outputPathExpressionParam1" @change="outputPathExpressionParamArrChange" placeholder="向上几级的Key">
       <el-option v-for="(item, index) in getParam1Items" :label="'向上' + index + '级'" :value="index">
         <span style="float: left">{{ '向上' + index + '级' }}</span>
         <span style="float: right; color: var(--el-text-color-secondary); font-size: 13px">
@@ -61,7 +61,7 @@
       </el-option>
     </el-select>
     <field-info fieldCode="OUTPUT_PATH_CONFIG_4_2"></field-info>
-    <el-select style="width: 200px; " v-model="innExpression.outputPathExpressionParam2" @change="outputPathExpressionParamArrChange" placeholder="匹配的第几段">
+    <el-select style="width: 200px" v-model="innExpression.outputPathExpressionParam2" @change="outputPathExpressionParamArrChange" placeholder="匹配的第几段">
       <el-option v-for="(item, index) in getPropertyItems()" :label="item.label" :value="item.label"></el-option>
     </el-select>
     <el-checkbox v-model="innExpression.outputPathIsContainUpperNode" style="margin-left: 20px">包含上级节点</el-checkbox>
@@ -69,7 +69,6 @@
     <el-input v-model="innExpression.outputPathExpressionSuf" placeholder="后缀" style="width: 150px" @input="outputPathExpressionParamArrChange" />
   </div>
 
-  
   <field-info fieldCode="OUTPUT_PATH_CONFIG_99"></field-info>
   <el-input style="width: 340px" placeholder="请输入目标路径" v-model="innExpression.outputPathExpression" @input="handleInputArrSpecValue"> </el-input>
 </template>
@@ -140,21 +139,21 @@ const getArrParam1Items = computed(() => {
   getAncestors(props.rootNode, props.currentNode).forEach((item, index) => {
     if (index == 0) {
       value.push({
-        value:item.name,
-        label:item.name,
-        disable:true
-      })
+        value: item.name,
+        label: item.name,
+        disable: true,
+      });
       value.push({
-        value:item.name,
-        label:item.name,
-        disable:true
-      })
+        value: item.name,
+        label: item.name,
+        disable: true,
+      });
     }
     value.push({
-        value:item.name,
-        label:item.name,
-        disable:false
-      });
+      value: item.name,
+      label: item.name,
+      disable: false,
+    });
   });
   return value;
 });

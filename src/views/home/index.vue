@@ -59,9 +59,8 @@
             </div>
           </el-splitter-panel>
         </el-splitter>
-      </el-main>
-      <el-footer>
-        <el-card style="width: 500px">
+
+        <el-card style="width: 500px; margin-top: 5px">
           <el-descriptions title="示例" border />
           <ul>
             <li v-for="(item, index) in innAllDemo">
@@ -82,7 +81,53 @@
               </el-link>
             </li>
           </ul>
-        </el-card>
+        </el-card></el-main
+      >
+      <el-footer class="ll-footer" height="auto">
+        <div class="personal-footer">
+          <div class="footer-content">
+            <div class="footer-section">
+              <h3>JSON Weaver</h3>
+              <p class="description">一个基于JOLT规范的JSON转换工具，帮助开发者轻松处理复杂的JSON数据转换需求。</p>
+            </div>
+
+            <div class="footer-section">
+              <h4>资源链接</h4>
+              <ul class="footer-links">
+                <li>
+                  <a href="https://github.com/your-username/JsonMap2" target="_blank" rel="noopener">
+                    <el-icon><Link /></el-icon>
+                    GitHub 仓库
+                  </a>
+                </li>
+                <li>
+                  <a class="help-link">
+                    <el-icon><QuestionFilled /></el-icon>
+                    使用帮助
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="footer-section">
+              <h4>技术栈</h4>
+              <div class="tech-stack">
+                <el-tag size="small" type="primary" effect="dark">Vue 3</el-tag>
+                <el-tag size="small" type="success" effect="dark">TypeScript</el-tag>
+                <el-tag size="small" type="warning" effect="dark">Element Plus</el-tag>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <div class="copyright">
+              <p>© {{ new Date().getFullYear() }} JSON Weaver. 用 ❤️ 制作.</p>
+            </div>
+            <div class="credits">
+              <p>一个个人开源项目</p>
+            </div>
+          </div>
+        </div>
       </el-footer>
     </el-container>
   </div>
@@ -231,8 +276,8 @@ const applyTheme = (isDark: boolean) => {
 .page-title {
   margin: 0;
   padding: 0;
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 26px;
+  font-weight: 500;
   color: var(--el-text-color-primary);
   line-height: 60px;
 }
@@ -333,6 +378,122 @@ const applyTheme = (isDark: boolean) => {
 }
 .dark .theme-switch :deep(.el-switch__inner) {
   color: #e5eaf3 !important; /* 深色主题下的文字颜色 */
+}
+
+.el-switch.is-checked .el-switch__core .el-switch__action {
+  left: calc(100% - 20px);
+}
+
+/* 个人网站footer样式 */
+.ll-footer {
+  background: linear-gradient(135deg, var(--el-color-primary-light-9) 0%, var(--el-fill-color-blank) 100%);
+  border-top: 1px solid var(--el-border-color-light);
+  padding: 0;
+  font-size: 12px;
+}
+
+.personal-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px 20px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.footer-section h3 {
+  color: var(--el-color-primary);
+  margin-bottom: 15px;
+  font-size: 1.2em;
+}
+
+.footer-section h4 {
+  color: var(--el-text-color-primary);
+  margin-bottom: 12px;
+  font-size: 1em;
+}
+
+.description {
+  color: var(--el-text-color-secondary);
+  line-height: 1.6;
+  font-size: 12px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  display: flex;
+  align-items: center;
+  color: var(--el-text-color-secondary);
+  text-decoration: none;
+  transition: color 0.3s;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.footer-links a:hover {
+  color: var(--el-color-primary);
+}
+
+.footer-links el-icon {
+  margin-right: 8px;
+  font-size: 12px;
+}
+
+.help-link {
+  display: flex;
+  align-items: center;
+}
+
+.tech-stack {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tech-stack .el-tag {
+  font-size: 12px;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid var(--el-border-color-light);
+  color: var(--el-text-color-secondary);
+  font-size: 12px;
+}
+
+.credits p,
+.copyright p {
+  margin: 0;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
 }
 </style>
 <style>
@@ -455,9 +616,7 @@ const applyTheme = (isDark: boolean) => {
 .jsoneditor-outer {
   min-height: 400px !important;
 }
-</style>
 
-<style>
 /* JSON编辑器浅色主题适配 */
 .light .ace-jsoneditor {
   background-color: #ffffff;
@@ -508,5 +667,30 @@ div.jsoneditor {
 }
 .el-splitter-panel {
   box-shadow: var(--el-box-shadow-light);
+}
+.ll-header {
+  box-shadow: var(--el-box-shadow-light);
+  border-bottom: 1px solid var(--el-border-color-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.ll-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+}
+
+.ll-header .el-row {
+  margin-top: 0px !important;
+  position: relative;
+  z-index: 1;
+}
+
+.el-switch.is-checked .el-switch__core .el-switch__action {
+  left: calc(100% - 20px);
 }
 </style>
