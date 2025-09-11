@@ -32,7 +32,6 @@
         <el-splitter>
           <el-splitter-panel size="20%" collapsible>
             <div class="panel-header">输入 JSON</div>
-
             <div class="demo-panel">
               <Vue3JsonEditor class="ll-json-editor" v-model="inputJson" :show-btns="false" :expandedOnStart="true" @json-change="onInputJsonChange" mode="code" />
             </div>
@@ -147,6 +146,10 @@ import joltApi from '@/api/modules/jsonMap';
 import { ALL_DEMO } from '@/assets/data/data';
 import { parse, stringify } from 'flatted';
 import { plainToInstance } from 'class-transformer';
+import store from '@/store';
+import { useGlobalStore } from '@/store/global';
+
+const globalStore = useGlobalStore();
 
 const inputJson = ref({});
 const outputJson = ref({});
@@ -160,12 +163,12 @@ const isDarkTheme = ref(false);
 
 onMounted(() => {
   init();
-  // inputToTreeAndTransform();
 
-  // 强制设置为亮色主题
-  isDarkTheme.value = false;
-  applyTheme(false);
-  localStorage.setItem('theme', 'light');
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    isDarkTheme.value = savedTheme === 'dark';
+    applyTheme(savedTheme === 'dark');
+  }
 });
 
 function init() {
@@ -177,6 +180,15 @@ function onInputJsonChange(value: any) {
   inputToTreeAndTransform();
 }
 
+//添加inputJson的监听事件，给store.global.inputJson赋值
+watch(
+  [() => inputJson.value, () => treeJson.value],
+  ([newInputJson, newTreeJson]) => {
+    globalStore.updateInputJson(newInputJson);
+    globalStore.updateSpecTreeNode(newTreeJson);
+  },
+  { immediate: true },
+);
 /**
  * inputJson 转换成树形结构，并转换成目标json
  */
@@ -187,7 +199,12 @@ function inputToTreeAndTransform() {
 
 function inputToTree() {
   const treeData = jsonToTree(inputJson.value);
-  treeJson.value = mergeJsonWithSpec(JSON.stringify(treeData), JSON.stringify(treeJson.value));
+  var noneObject = mergeJsonWithSpec(JSON.stringify(treeData), JSON.stringify(treeJson.value));
+  treeJson.value = plainToInstance(JsonTreeModel, noneObject, {
+    enableCircularCheck: true, // 如果出现循环引用可加
+    exposeDefaultValues: false, // 不填充默认值
+  });
+  // treeJson.value = mergeJsonWithSpec(JSON.stringify(treeData), JSON.stringify(treeJson.value));
 }
 
 const handleTreeChange = (value: any) => {
@@ -218,7 +235,7 @@ const handleActiveDemoChange = () => {
     exposeDefaultValues: false, // 不填充默认值
   });
   // treeJson.value = parse(JSON.stringify(innAllDemo.value.filter((item) => item.id === activeDemoId.value)[0].data!.spec));
-  console.log(treeJson.value);
+  // console.log(treeJson.value);
 };
 const handleDemoClick = (demoDetail: DemoItem) => {
   activeDemoId.value = demoDetail.id;

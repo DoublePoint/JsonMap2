@@ -17,8 +17,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog v-model="dialogSpecConfigVisible" title="编辑规则" width="2000" height="600" center draggable overflow transition="dialog-bounce">
-      <configSpecDetail v-model:node="currentConfigSpecDetail" :root-node="tableData"></configSpecDetail>
+    <el-dialog v-model="dialogSpecConfigVisible" title="编辑规则" width="1900" height="600" align-center center draggable overflow transition="dialog-bounce">
+      <configSpecDetail v-model:node="currentConfigSpecDetail" :root-node="tableData" @update:node="updateNode"></configSpecDetail>
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogSpecConfigVisible = false">取消</el-button>
@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import configSpecDetail from './configSpecDetail.vue';
 import { JsonTreeModel, SpecModel } from '../../utils/model/jsonModel';
-import { TableColumnCtx } from 'element-plus';
+import { inputEmits, TableColumnCtx } from 'element-plus';
 import { CopyDocument } from '@element-plus/icons-vue';
 
 const tableData = ref<JsonTreeModel[]>([]);

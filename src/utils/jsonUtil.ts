@@ -2,7 +2,6 @@ type NodeType = 'object' | 'array' | 'string' | 'number' | 'boolean' | 'null';
 
 import { JsonTreeModel } from '@/utils/model/jsonModel';
 import { CONST_KEY_SELECT_TYPE, CONST_OUTPUT_KEY_OR_VALUE_TYPE } from './constant';
-import exp from 'constants';
 
 export function jsonToTree(data: any): JsonTreeModel[] {
   function buildTree(obj: any, parentId: string = ''): JsonTreeModel[] {
@@ -98,17 +97,16 @@ export function buildSpec(nodes: JsonTreeModel[]) {
 }
 export function treeToSpecJson(nodes: JsonTreeModel[]): any {
   const result: any = {};
-
   nodes.forEach((node) => {
     // 如果有子节点，递归处理
     if (node.children && node.children.length > 0) {
       //如果匹配了规则
       if (node.spec) {
         node.spec.specList.forEach((specDetail) => {
-          const isOutputKeyOrValueContainKey = specDetail.outputKeyOrValueType.includes(CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY) && specDetail.outputKeysExpressions[0].outputPathExpression;
-          const isOutputKeyOrValueContainValue = specDetail.outputKeyOrValueType.includes(CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE) && specDetail.outputValuesExpressions[0].outputPathExpression;
-          const isOutputKeyOrValueContainsConstValue =
-            specDetail.outputKeyOrValueType.includes(CONST_OUTPUT_KEY_OR_VALUE_TYPE.CONST_VALUE) && specDetail.outputConstValuesExpressions[0].outputPathExpression;
+          const isOutputKeyOrValueContainKey = specDetail.isOutputKeyOrValueContainKey();
+          const isOutputKeyOrValueContainValue = specDetail.isOutputKeyOrValueContainValue();
+          const isOutputKeyOrValueContainsConstValue = specDetail.isOutputKeyOrValueContainsConstValue();
+
           if (isOutputKeyOrValueContainKey) {
             for (let i = 0; i < specDetail.outputKeysExpressions.length; i++) {
               const outputExpres = specDetail.outputKeysExpressions[i];
@@ -135,7 +133,6 @@ export function treeToSpecJson(nodes: JsonTreeModel[]): any {
               const outputExpres = specDetail.outputConstValuesExpressions[i];
               if (outputExpres.outputPathExpression && outputExpres.outputConstValue) {
                 setByPath(constValueResult, [`#${outputExpres.outputConstValue}`], outputExpres.outputPathExpression);
-                // setByPath(result, [specDetail.nodeKeyExpression, `#${outputExpres.outputConstValue}`], outputExpres.outputPathExpression);
               }
             }
           }
@@ -152,18 +149,10 @@ export function treeToSpecJson(nodes: JsonTreeModel[]): any {
             result[specDetail.nodeKeyExpression][key] = rel[key];
           });
           if (specDetail.whereExpression?.whereExpression) {
-            // if (isOutputKeyOrValueContainsConstValue) {
-            // setByPath(result, [node.code, `#${outputExpres.outputConstValue}`], rel);
-            // } else {
             setByPath(result, [replaceSpecialCharacters(node.code), specDetail.nodeKeyExpression], result[specDetail.nodeKeyExpression]);
-            // }
             delete result[specDetail.nodeKeyExpression];
           }
         });
-
-        // if (Object.keys(rel).length > 0) {
-        // result[node.code] = rel;
-        // }
       } else {
         const rel = treeToSpecJson(node.children);
         if (Object.keys(rel).length > 0) {
@@ -174,10 +163,9 @@ export function treeToSpecJson(nodes: JsonTreeModel[]): any {
       // 如果是叶子节点，直接使用value作为值
       if (node.spec) {
         node.spec.specList.forEach((specDetail) => {
-          const isOutputKeyOrValueContainKey = specDetail.outputKeyOrValueType.includes(CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY) && specDetail.outputKeysExpressions[0].outputPathExpression;
-          const isOutputKeyOrValueContainValue = specDetail.outputKeyOrValueType.includes(CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE) && specDetail.outputValuesExpressions[0].outputPathExpression;
-          const isOutputKeyOrValueContainsConstValue =
-            specDetail.outputKeyOrValueType.includes(CONST_OUTPUT_KEY_OR_VALUE_TYPE.CONST_VALUE) && specDetail.outputConstValuesExpressions[0].outputPathExpression;
+          const isOutputKeyOrValueContainKey = specDetail.isOutputKeyOrValueContainKey();
+          const isOutputKeyOrValueContainValue = specDetail.isOutputKeyOrValueContainValue();
+          const isOutputKeyOrValueContainsConstValue = specDetail.isOutputKeyOrValueContainsConstValue();
           //如果输出的包含key
           if (isOutputKeyOrValueContainKey) {
             for (let i = 0; i < specDetail.outputKeysExpressions.length; i++) {
@@ -200,7 +188,6 @@ export function treeToSpecJson(nodes: JsonTreeModel[]): any {
               const outputExpres = specDetail.outputConstValuesExpressions[i];
               if (outputExpres.outputPathExpression && outputExpres.outputConstValue) {
                 setByPath(constValueResult, [`#${outputExpres.outputConstValue}`], outputExpres.outputPathExpression);
-                // result[specDetail.nodeKeyExpression][`#${outputExpres.outputConstValue}`] = outputExpres.outputPathExpression;
               }
             }
           }
@@ -349,6 +336,29 @@ export function mergeJsonWithSpec(json1: string, json2: string): any {
   }
 
   return walk(j1, j2);
+}
+
+/**
+ * 根据 id 整树替换节点，返回全新树（不破坏源树）
+ * @param root     原始树
+ * @param newNode  新节点（含 id）
+ * @returns        更新后的全新树
+ */
+export function updateTreeNode(root: JsonTreeModel[], newNode: JsonTreeModel): JsonTreeModel[] {
+  function walk(nodes: JsonTreeModel[]): JsonTreeModel[] {
+    return nodes.map((n) => {
+      if (n.id === newNode.id) {
+        // 命中替换：深拷贝 newNode，并保留 children 结构（如需合并可再调整）
+        return { ...newNode, children: n.children };
+      }
+      // 未命中，继续递归
+      return {
+        ...n,
+        children: n.children ? walk(n.children) : undefined,
+      };
+    });
+  }
+  return walk(root);
 }
 
 /**

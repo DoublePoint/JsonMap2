@@ -1166,7 +1166,7 @@ export const ALL_DEMO = [
           _outputPathExpressionParam1Node: '173',
           _outputPathExpressionParam2: '137',
           _outputPathExpressionSuf: '137',
-          _outputPathIsContainUpperNode: true,
+          _outputPathIsContainUpperNode: false,
           _currentNode: '174',
           _rootNode: '175',
         },

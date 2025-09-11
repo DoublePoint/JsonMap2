@@ -11,7 +11,7 @@
 
 ## 项目简介
 
-**JsonWeaver** 是一款基于 [Jolt](https://github.com/bazaarvoice/jolt) 转换引擎的可视化 JSON 结构映射与转换平台。通过拖拽和可视化配置，用户可以轻松定义 JSON 数据的映射规则，将源 JSON 数据自动转换为目标格式，极大提升了数据适配、接口对接、配置迁移等场景下的开发效率。
+**JsonWeaver** 是一款基于 [Jolt](https://github.com/bazaarvoice/jolt) 转换引擎的可视化 JSON 结构映射与转换平台。通过可视化配置，用户可以轻松定义 JSON 数据的映射规则，将源 JSON 数据自动转换为目标格式，极大提升了数据适配、接口对接、配置迁移等场景下的开发效率。
 
 ---
 

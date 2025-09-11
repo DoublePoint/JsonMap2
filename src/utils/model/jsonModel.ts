@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import * as Constant from '../constant';
 import { build$, getCodePath, getCodePathById, replaceSpecialCharacters } from '../jsonUtil';
-import { IOutputKeyExpression, ISpecDetail, IOutputValueExpression, IWhereExpression, IOutputConstValueExpression, IBaseOutputPathExpression } from './jsonModelInterface';
+import { IOutputKeyExpression, ISpecDetail, IOutputValueExpression, IWhereExpression, IOutputConstValueExpression, IBaseOutputPathExpression, IDropBean } from './jsonModelInterface';
 
 export class JsonTreeModel {
   id: string;
@@ -75,6 +75,29 @@ export class SpecDetail implements ISpecDetail {
     this.outputPathExpressionParam1 = '';
     this.outputPathExpressionParam2 = '';
   }
+
+  /**
+   * 获取输出键或者值包含键的表达式
+   */
+  isOutputKeyOrValueContainKey() {
+    return this.outputKeyOrValueType.includes(Constant.CONST_OUTPUT_KEY_OR_VALUE_TYPE.KEY) && this.outputKeysExpressions.length > 0 && this.outputKeysExpressions[0].outputPathExpression;
+  }
+  /**
+   * 获取输出键或者值包含值的表达式
+   */
+  isOutputKeyOrValueContainValue() {
+    return this.outputKeyOrValueType.includes(Constant.CONST_OUTPUT_KEY_OR_VALUE_TYPE.VALUE) && this.outputValuesExpressions.length > 0 && this.outputValuesExpressions[0].outputPathExpression;
+  }
+  /**
+   * 获取输出键或者值包含常量值的表达式
+   */
+  isOutputKeyOrValueContainsConstValue() {
+    return (
+      this.outputKeyOrValueType.includes(Constant.CONST_OUTPUT_KEY_OR_VALUE_TYPE.CONST_VALUE) &&
+      this.outputConstValuesExpressions.length > 0 &&
+      this.outputConstValuesExpressions[0].outputPathExpression
+    );
+  }
 }
 
 export class OutputPathExpression implements IBaseOutputPathExpression {
@@ -86,7 +109,7 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
   _outputPathExpressionParam1Node?: JsonTreeModel;
   _outputPathExpressionParam2: string = '';
   _outputPathExpressionSuf: string = '';
-  _outputPathIsContainUpperNode: boolean = true;
+  _outputPathIsContainUpperNode: boolean = false;
 
   constructor(private _currentNode: JsonTreeModel, private _rootNode: JsonTreeModel[]) {
     this.outputPathType = Constant.CONST_OUTPUT_PATH_TYPE.DIRECT_INPUT;
@@ -101,7 +124,6 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
     this._outputPathExpression = value;
   }
 
-
   get outputPathExpressionArrayParam1(): string {
     return this._outputPathExpressionArrayParam1;
   }
@@ -110,7 +132,6 @@ export class OutputPathExpression implements IBaseOutputPathExpression {
     this._outputPathExpressionArrayParam1 = value;
     this.buildOutputPathExpression();
   }
-
 
   get outputPathIsContainUpperNode(): boolean {
     return this._outputPathIsContainUpperNode;
@@ -315,4 +336,17 @@ export class OutputConstValueExpression extends OutputPathExpression implements 
   }
 }
 
-export class WhereExpression implements IWhereExpression { }
+export class WhereExpression implements IWhereExpression {}
+
+export class DropBean implements IDropBean {
+  value: string;
+  label: string;
+  disabled: boolean = false;
+  constructor(value: string, label: string, disabled?: boolean) {
+    this.value = value;
+    this.label = label;
+    if (disabled) {
+      this.disabled = disabled;
+    }
+  }
+}
