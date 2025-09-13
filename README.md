@@ -52,7 +52,12 @@
    支持深色/浅色主题，内置中英文界面。
 
 6. **示例与帮助文档**  
-   内置常见转换场景示例，配套详细文档，助力快速上手。
+    内置常见转换场景示例，配套详细文档，助力快速上手。
+   ![alt text](image-1.png)
+   ![alt text](image.png)
+   ![alt text](image-2.png)
+   ![alt text](image-3.png)
+   ![alt text](image-4.png)
 
 ---
 

@@ -5,11 +5,17 @@
   <span v-show="innExpression.outputPathType == CONST_OUTPUT_PATH_TYPE.BY_KEY">
     <InputWithPrefix v-model="innExpression.outputPathExpressionPre" fieldCode="OUTPUT_PATH_CONFIG_2" @input="outputPathExpressionParamArrChange" prefix="前缀" />
 
-    <SelectWithPrefix v-model="innExpression.outputPathExpressionArrayParam1" @change="outputPathExpressionParamArrChange" prefix="索引位置" v-if="innExpression.isPreArr()">
-      <el-option v-for="(item, index) in getParam1Items" :value="index">
-        <span style="float: left">{{ '向上' + index + '级节点所在索引' }}</span>
+    <SelectWithPrefix
+      fieldCode="OUTPUT_PATH_CONFIG_BY_KEY_1"
+      v-model="innExpression.outputPathExpressionArrayParam1"
+      @change="outputPathExpressionParamArrChange"
+      prefix="索引位置"
+      v-if="innExpression.isPreArr()"
+    >
+      <el-option v-for="(item, index) in getArrParam1Items" :value="index" :disabled="item.disabled">
+        <span style="float: left">{{ '向上' + index + '级' }}</span>
         <span style="float: right; color: var(--el-text-color-secondary); font-size: 13px">
-          {{ item.name }}
+          {{ item.label }}
         </span>
       </el-option>
     </SelectWithPrefix>
@@ -57,7 +63,6 @@
       <el-option v-for="(item, index) in getPropertyItems()" :label="item.label" :value="item.label"></el-option>
     </SelectWithPrefix>
 
-    <el-checkbox v-model="innExpression.outputPathIsContainUpperNode" style="margin-left: 20px">包含上级节点</el-checkbox>
     <InputWithPrefix v-model="innExpression.outputPathExpressionSuf" fieldCode="OUTPUT_PATH_CONFIG_5" @input="outputPathExpressionParamArrChange" prefix="后缀" />
   </div>
   <InputWithPrefix v-model="innExpression.outputPathExpression" fieldCode="OUTPUT_PATH_CONFIG_99" @input="handleInputArrSpecValue" prefix="最终目标路径" />
@@ -125,13 +130,46 @@ const getParam1Items = computed(() => {
   });
   return value;
 });
-const getOutputPathExpressionParam1Items = computed(() => {
+const getOutputPathContainArrItems = computed(() => {
   let value: JsonTreeModel[] = [];
   getAncestors(props.rootNode, props.currentNode).forEach((item, index) => {
     if (index == 0) {
-      value.push(item);
+      value.push({
+        value: item.name,
+        label: item.name,
+        disabled: true,
+      });
+      value.push({
+        value: item.name,
+        label: item.name,
+        disabled: true,
+      });
     }
     value.push(item);
+  });
+  return value;
+});
+
+const getOutputPathExpressionParam1Items = computed(() => {
+  let value: IDropBean[] = [];
+  getAncestors(props.rootNode, props.currentNode).forEach((item, index) => {
+    if (index == 0) {
+      value.push({
+        value: item.name,
+        label: item.name,
+        disabled: true,
+      });
+      value.push({
+        value: item.name,
+        label: item.name,
+        disabled: true,
+      });
+    }
+    value.push({
+      value: item.name,
+      label: item.name,
+      disabled: false,
+    });
   });
   return value;
 });

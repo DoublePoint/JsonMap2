@@ -96,13 +96,15 @@ export const CONST_FILED_INFO_ITEMS = {
     fieldCode: '1',
     fieldName: '',
     fieldType: '1',
-    fieldDesc: `目标路径的前缀`,
+    fieldDesc: `目标路径的前缀。
+说明：目标路径的前缀内容可以任意输入，当输入内容包含[]时，请以.结尾`,
   },
   OUTPUT_PATH_CONFIG_3: {
     fieldCode: '1',
     fieldName: '',
     fieldType: '1',
-    fieldDesc: `向上几级`,
+    fieldDesc: `向上几级，下拉左侧为向上层级，右侧为该层级的节点属性名称：
+1、当节点类型为当前节点、本级所有其它节点、本级所有符合条件的节点时，0级-1级均为本节点、`,
   },
   OUTPUT_PATH_CONFIG_4_1: {
     fieldCode: '1',
@@ -138,5 +140,13 @@ export const CONST_FILED_INFO_ITEMS = {
 1. data.devCode ： data下的devCode属性
 2. data[] ： data数组
 更多请参考jlot</pre>`,
+  },
+  OUTPUT_PATH_CONFIG_BY_KEY_1: {
+    fieldCode: '1',
+    fieldName: '',
+    fieldType: '1',
+    fieldDesc: `<pre>当前缀输入包含[]时展示该属性:
+说明：当前缀输入包含[]时，此处选择的为填充[]中的索引信息，右侧下拉分为左右两个部分，左半部分为向上层级，右半部分为该层级下的节点属性名称，实际转换时根据左半部分进行转换，右半部分是为了更容易选择对应的层级
+</pre>`,
   },
 };
